@@ -22,6 +22,7 @@ module ApiTaster
         resources :users do
           resources :comments
         end
+        mount Rails.application => '/app'
       end
 
       Route.route_set = routes
@@ -54,17 +55,33 @@ module ApiTaster
         :id   => 0,
         :path => '/dummy/:dummy_id'
       }, {
-        :id   => 1
+        :id   => 999,
+        :path => 'a_non_existing_dummy',
+        :verb => 'get'
       }])
       Route.inputs[0] = [{ :dummy_id => 1, :hello => 'world' }]
 
-      Route.inputs_for(Route.find(1)).should have_key(:undefined)
+      Route.inputs_for(Route.find(999)).should have_key(:undefined)
 
       2.times do
         Route.inputs_for(Route.find(0)).should == [{
           :url_params  => { :dummy_id => 1 },
           :post_params => { :hello => 'world' }
         }]
+      end
+    end
+
+    context "private methods" do
+      it "#discover_rack_app" do
+        klass = Class.new
+        klass.stub_chain(:class, :name).and_return(ActionDispatch::Routing::Mapper::Constraints)
+        klass.stub(:app).and_return('klass')
+
+        Route.send(:discover_rack_app, klass).should == 'klass'
+      end
+
+      it "#discover_rack_app" do
+        Route.send(:discover_rack_app, ApiTaster::Engine).should == ApiTaster::Engine
       end
     end
   end

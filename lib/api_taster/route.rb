@@ -6,17 +6,21 @@ module ApiTaster
     class << self
       def routes
         _routes = []
+        i = -1
 
-        route_set.routes.each_with_index do |route, index|
+        route_set.routes.each do |route|
+          next if route.app.is_a?(Sprockets::Environment)
+          next if route.app == ApiTaster::Engine
+
+          if rack_app = discover_rack_app(route.app)
+            rack_app.routes.routes.each do |rack_route|
+              _routes << normalise_route(rack_route, i+=1)
+            end
+          end
+
           next if route.verb.source.empty?
 
-          _routes << {
-            :id   => index,
-            :name => route.name,
-            :verb => route.verb.source.gsub(/[$^]/, ''),
-            :path => route.path.spec.to_s.sub('(.:format)', ''),
-            :reqs => route.requirements
-          }
+          _routes << normalise_route(route, i+=1)
         end
 
         _routes
@@ -46,6 +50,25 @@ module ApiTaster
       end
 
       private
+
+      def discover_rack_app(app)
+        class_name = app.class.name.to_s
+        if class_name == "ActionDispatch::Routing::Mapper::Constraints"
+          discover_rack_app(app.app)
+        elsif class_name !~ /^ActionDispatch::Routing/
+          app
+        end
+      end
+
+      def normalise_route(route, id)
+        {
+          :id   => id,
+          :name => route.name,
+          :verb => route.verb.source.gsub(/[$^]/, ''),
+          :path => route.path.spec.to_s.sub('(.:format)', ''),
+          :reqs => route.requirements
+        }
+      end
 
       def split_input(input, route)
         url_param_keys = route[:path].scan /:\w+/
