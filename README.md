@@ -2,7 +2,7 @@
 
 A quick and easy way to visually test out your application's API.
 
-![](http://i.imgur.com/ZffbS.png)
+![](http://i.imgur.com/1kyEk.png)
 
 ## Why?
 
