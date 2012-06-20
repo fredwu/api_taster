@@ -29,6 +29,14 @@ Rails.application.routes.draw do
 end
 ```
 
+Add API Taster into the autoload paths in `application.rb`:
+
+```ruby
+config.autoload_paths += %W(
+  #{ApiTaster::Engine.root}
+)
+```
+
 In `routes.rb`, define parameters for each API endpoint after the normal routes definition block. For example:
 
 ```ruby
