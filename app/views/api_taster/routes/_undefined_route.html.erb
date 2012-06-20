@@ -1,0 +1,7 @@
+<div class="alert alert-error">
+  <p><strong><%= "Route '#{route[:verb]} #{route[:path]}' is undefined." %></strong></p>
+  <p>Please define this route in <code>routes.rb</code>:</p>
+  <pre class="prettyprint lang-rb">ApiTaster.routes do
+  <%= route[:verb].downcase %> '<%= route[:path] %>', {}
+end</pre>
+</div>

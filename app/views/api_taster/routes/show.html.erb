@@ -1,0 +1,55 @@
+<ul class="breadcrumb">
+  <li class="breadcrumb-controller"><%= @route[:reqs][:controller].humanize %><span class="divider">/</span></li>
+  <li>
+    <div class="label-api">
+      <span class="label label-important"><%= @route[:verb] %></span>
+    </div>
+    <strong><%= @route[:path] %></strong>
+  </li>
+</ul>
+
+<% if @inputs.is_a?(Hash) && @inputs.has_key?(:undefined) %>
+  <%= render 'undefined_route', :route => @inputs[:undefined] %>
+<% else %>
+  <% @inputs.each do |input| %>
+    <%= form_tag @route[:path], :method => @route[:verb], :class => 'well form-horizontal', :remote => true do %>
+
+      <% if input[:url_params].empty? && input[:post_params].empty? %>
+        <div class="alert alert-info">
+          No params specified.
+        </div>
+      <% end %>
+
+      <% if input[:url_params].present? %>
+        <fieldset id="url-params">
+          <legend class="super-legend">URL Params</legend>
+          <% input[:url_params].each do |label, value| %>
+            <%= render 'param_form_element', :label => "[api_taster_url_params]#{label}", :value => value, :label_text => label %>
+          <% end %>
+        </fieldset>
+      <% end %>
+
+      <% if input[:post_params].present? %>
+        <fieldset>
+          <legend class="super-legend">Post Params</legend>
+          <%= ApiTaster::FormBuilder.new(input[:post_params]).html.html_safe %>
+        </fieldset>
+      <% end %>
+
+      <div class="form-actions">
+        <input id="submit-api" type="submit" class="btn btn-primary pull-right"></input>
+      </div>
+
+    <% end %>
+  <% end %>
+<% end %>
+
+<div id="show-api-response-div" class="well hidden">
+  <legend class="super-legend">Response</legend>
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#" id="response-json">JSON</a></li>
+    <li><a href="#" id="response-raw">Raw</a></li>
+  </ul>
+  <pre class="prettyprint nowrap" ref="response-json"></pre>
+  <pre class="prettyprint hidden" ref="response-raw"></pre>
+</div>

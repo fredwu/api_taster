@@ -1,0 +1,51 @@
+@import "bootstrap";
+
+$colour_text: #333;
+$colour_grey: #999;
+
+body {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.hidden {
+  display: none;
+}
+
+.form-actions {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+legend {
+  font-size: 14px;
+  font-weight: bold;
+  color: $colour_grey;
+
+  &.super-legend {
+    color: $colour_text;
+  }
+}
+
+.label-api {
+  display: inline-block;
+  padding-right: 5px;
+}
+
+.label-api-full {
+  width: 50px;
+  text-align: right;
+}
+
+.breadcrumb-controller {
+  font-weight: bold;
+  color: $colour_grey;
+}
+
+#show-api-response-div {
+  pre.nowrap {
+    overflow-x: auto;
+    white-space: pre;
+    word-wrap: normal;
+  }
+}

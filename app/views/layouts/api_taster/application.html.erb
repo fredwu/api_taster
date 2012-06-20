@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Taster</title>
+  <%= stylesheet_link_tag    "api_taster/application", :media => "all" %>
+  <%= javascript_include_tag "api_taster/application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <h1><a class="brand" href="<%= root_path %>">API Taster</a></h1>
+        <div class="nav-collapse collapse">
+          <ul class="nav pull-right">
+            <li>
+              <a href="/" target="_blank"><%= Rails.application.class.name %> <i class="icon-share-alt icon-white"></i></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <%= yield %>
+  </div>
+</body>
+</html>
