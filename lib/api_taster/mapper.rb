@@ -22,8 +22,16 @@ module ApiTaster
       def map_method(method, path, params)
         route = Route.find_by_verb_and_path(method, path)
 
-        Route.inputs[route[:id]] ||= []
-        Route.inputs[route[:id]] << params
+        if route.nil?
+          Route.obsolete_definitions << {
+            :verb   => method,
+            :path   => path,
+            :params => params
+          }
+        else
+          Route.inputs[route[:id]] ||= []
+          Route.inputs[route[:id]] << params
+        end
       end
     end
   end

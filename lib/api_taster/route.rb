@@ -2,6 +2,7 @@ module ApiTaster
   class Route
     cattr_accessor :route_set
     cattr_accessor :inputs
+    cattr_accessor :obsolete_definitions
 
     class << self
       def routes

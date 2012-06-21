@@ -83,10 +83,10 @@ $.fn.extend({
 });
 
 jQuery(function($) {
-	$("a.show-api").click(function(e) {
+	$("#list-api-div a").click(function(e) {
 		e.preventDefault();
 
-		$("a.show-api").parent().removeClass("active");
+		$(this).parent().siblings().removeClass("active");
 		$(this).parent().addClass("active");
 
 		$("#show-api-div .div-container").load(this.href, function() {

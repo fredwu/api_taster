@@ -9,6 +9,10 @@ Rails.application.routes.draw do
 end
 
 ApiTaster.routes do
+  get '/i_dont_exist_anymore', {
+    :hello => 'world'
+  }
+
   get '/users'
 
   post '/users', {

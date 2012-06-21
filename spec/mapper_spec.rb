@@ -2,6 +2,25 @@ require 'spec_helper'
 
 module ApiTaster
   describe Mapper do
+    context "non-existing routes" do
+      before(:all) do
+        routes = ActionDispatch::Routing::RouteSet.new
+        routes.draw do
+          # nothing
+        end
+
+        ApiTaster.routes do
+          get '/dummy_route'
+        end
+
+        Route.route_set = routes
+      end
+
+      it "records obsolete definitions" do
+        Route.obsolete_definitions.first[:path].should == '/dummy_route'
+      end
+    end
+
     before(:all) do
       Rails.application.routes.draw { resources :dummy_users }
 

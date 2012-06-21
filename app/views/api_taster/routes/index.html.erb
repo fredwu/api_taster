@@ -2,11 +2,22 @@
   <div id="list-api-div" class="span5">
     <div class="div-container">
       <ul class="well nav nav-list">
+        <% if @has_obsolete_definitions %>
+          <li class="nav-header">Information</li>
+          <li>
+            <a href="<%= obsolete_definitions_routes_path %>">
+              <div class="label-api">
+                <span class="label label-warning">Warning</span>
+              </div>
+              Obsolete Definitions Detected
+            </a>
+          </li>
+        <% end %>
         <% @routes.each do |controller, routes| %>
           <li class="nav-header"><%= controller %></li>
           <% routes.each do |route| %>
             <li>
-              <a class="show-api" href="<%= route_path(route[:id]) %>">
+              <a href="<%= route_path(route[:id]) %>">
                 <div class="label-api label-api-full">
                   <span class="label label-important"><%= route[:verb] %></span>
                 </div>

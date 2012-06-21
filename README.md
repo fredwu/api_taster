@@ -69,6 +69,12 @@ end
 
 That's it! Enjoy! :)
 
+## Obsolete / Mismatched Route Definitions Detection
+
+APIs evolve - especially during the development stage. To keep `ApiTaster.routes` in sync with your route definitions, API Taster provides a warning page that shows you the definitions that are obsolete/mismatched therefore you could correct or remove them.
+
+![](http://i.imgur.com/rqYiY.png)
+
 ## Use with an Engine
 
 Rails Engines are largely self contained and separated from your main app. Therefore, to use API Taster with an Engine, you would need some extra efforts:

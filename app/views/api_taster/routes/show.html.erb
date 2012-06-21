@@ -1,12 +1,9 @@
-<ul class="breadcrumb">
-  <li class="breadcrumb-controller"><%= @route[:reqs][:controller].humanize %><span class="divider">/</span></li>
-  <li>
-    <div class="label-api">
-      <span class="label label-important"><%= @route[:verb] %></span>
-    </div>
-    <strong><%= @route[:path] %></strong>
-  </li>
-</ul>
+<%= render 'breadcrumb',
+  :parent     => @route[:reqs][:controller].humanize,
+  :current    => @route[:path],
+  :label      => @route[:verb],
+  :label_type => 'important'
+%>
 
 <% if @inputs.is_a?(Hash) && @inputs.has_key?(:undefined) %>
   <%= render 'undefined_route', :route => @inputs[:undefined] %>
