@@ -77,7 +77,7 @@ If you use a test factory such as [FactoryGirl](https://github.com/thoughtbot/fa
 
 APIs evolve - especially during the development stage. To keep `ApiTaster.routes` in sync with your route definitions, API Taster provides a warning page that shows you the definitions that are obsolete/mismatched therefore you could correct or remove them.
 
-![](http://i.imgur.com/rqYiY.png)
+![](http://i.imgur.com/Fo7kQ.png)
 
 ## Use with an Engine
 
