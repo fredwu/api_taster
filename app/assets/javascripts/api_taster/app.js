@@ -11,6 +11,16 @@ var ApiTaster = {
 	},
 	restoreFormActionFor: function(form) {
 		$(form).attr("action", ApiTaster.formAction);
+	},
+	detectContentType: function(response) {
+		var contentType = response.getResponseHeader("Content-Type");
+		var detectedContentType = null
+
+		if (contentType.match(/application\/json/)) {
+			 detectedContentType = 'json';
+		}
+
+		return detectedContentType;
 	}
 };
 
@@ -45,6 +55,14 @@ $.fn.extend({
 			$(contentElement, container).hide();
 			$(contentElement + "[ref=" + $(this).attr("id") + "]", container).show();
 		});
+	},
+	showNavTab: function(name) {
+		$("ul.nav-tabs li", this).removeClass("active");
+		$("ul.nav-tabs li a#response-" + name, this).parent().show().addClass("active");
+
+		$("pre", this).hide();
+
+		return $("pre[ref=response-" + name + "]", this).show();
 	},
 	displayOnlySelectedParamsFieldset: function() {
 		$("fieldset", this).hide();
@@ -86,10 +104,15 @@ jQuery(function($) {
 				$("#show-api-response-div").slideDown(100);
 			}
 
+			switch (ApiTaster.detectContentType(xhr)) {
+				case "json":
+					$("#show-api-response-div").showNavTab("json").text(
+						JSON.stringify(JSON.parse(xhr.responseText), null, 2)
+					);
+					break;
+			}
+
 			$("#show-api-response-div pre[ref=response-raw]").text(xhr.responseText);
-			$("#show-api-response-div pre[ref=response-json]").text(
-				JSON.stringify(JSON.parse(xhr.responseText), null, 2)
-			);
 
 			prettyPrint();
 		});
