@@ -19,17 +19,17 @@ API Taster compared to alternatives, have the following advantages:
 Add API Taster in your gemfile:
 
 ```ruby
-gem 'api_taster'
+gem 'api_taster', :group => :development
 ```
 Mount API Taster, this will allow you to visit API Taster from within your app. For example:
 
 ```ruby
 Rails.application.routes.draw do
-  mount ApiTaster::Engine => "/api_taster"
+  mount ApiTaster::Engine => "/api_taster" if Rails.env.development?
 end
 ```
 
-Add API Taster into the autoload paths in `application.rb`:
+Add API Taster into the autoload paths in `development.rb`:
 
 ```ruby
 config.autoload_paths += %W(
@@ -40,32 +40,51 @@ config.autoload_paths += %W(
 In `routes.rb`, define parameters for each API endpoint after the normal routes definition block. For example:
 
 ```ruby
-ApiTaster.routes do
-  get '/users'
+if Rails.env.development?
+  ApiTaster.routes do
+    get '/users'
 
-  post '/users', {
-    :user => {
-      :name => 'Fred'
+    post '/users', {
+      :user => {
+        :name => 'Fred'
+      }
     }
-  }
 
-  get '/users/:id', {
-    :id => 1
-  }
-
-  put '/users/:id', {
-    :id => 1, :user => {
-      :name => 'Awesome'
+    get '/users/:id', {
+      :id => 1
     }
-  }
 
-  delete '/users/:id', {
-    :id => 1
-  }
+    put '/users/:id', {
+      :id => 1, :user => {
+        :name => 'Awesome'
+      }
+    }
+
+    delete '/users/:id', {
+      :id => 1
+    }
+  end
 end
 ```
 
 That's it! Enjoy! :)
+
+## Use with an Engine
+
+Rails Engines are largely self contained and separated from your main app. Therefore, to use API Taster with an Engine, you would need some extra efforts:
+
+In your app Gemfile, you would also need:
+
+```ruby
+gem "jquery-rails"
+gem "bootstrap-sass"
+```
+
+If you are hand-picking Rails components, make sure in your `application.rb` you have Sprockets enabled:
+
+```ruby
+require "sprockets/railtie"
+```
 
 ## License
 
