@@ -69,6 +69,10 @@ end
 
 That's it! Enjoy! :)
 
+## Share Params with Test Factories
+
+If you use a test factory such as [FactoryGirl](https://github.com/thoughtbot/factory_girl), you can require your test factories and share the params. For example in FactoryGirl you can use the `attributes_for(:name_of_factory)` method.
+
 ## Obsolete / Mismatched Route Definitions Detection
 
 APIs evolve - especially during the development stage. To keep `ApiTaster.routes` in sync with your route definitions, API Taster provides a warning page that shows you the definitions that are obsolete/mismatched therefore you could correct or remove them.
