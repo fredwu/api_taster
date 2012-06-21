@@ -2,7 +2,7 @@ module ApiTaster
   class RoutesController < ApplicationController
     def index
       @routes = Route.grouped_routes
-      @has_obsolete_definitions = Route.obsolete_definitions.size > 0
+      @has_obsolete_definitions = Route.obsolete_definitions.present?
     end
 
     def show
