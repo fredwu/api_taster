@@ -23,6 +23,7 @@ module ApiTaster
           resources :comments
         end
         mount Rails.application => '/app'
+        mount proc {} => '/rack_app'
       end
 
       Route.route_set = routes

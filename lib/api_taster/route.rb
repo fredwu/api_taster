@@ -13,7 +13,7 @@ module ApiTaster
           next if route.app.is_a?(Sprockets::Environment)
           next if route.app == ApiTaster::Engine
 
-          if rack_app = discover_rack_app(route.app)
+          if (rack_app = discover_rack_app(route.app)) && rack_app.respond_to?(:routes)
             rack_app.routes.routes.each do |rack_route|
               _routes << normalise_route(rack_route, i+=1)
             end
