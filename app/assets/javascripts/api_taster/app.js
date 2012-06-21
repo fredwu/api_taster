@@ -1,17 +1,23 @@
 var ApiTaster = {
+
 	formAction: '',
+
 	disableUrlParams: function() {
 		$("fieldset[ref=url-params] input").prop("disabled", true);
 	},
+
 	enableUrlParams: function() {
 		$("fieldset[ref=url-params] input").prop("disabled", false);
 	},
+
 	storeFormActionFor: function(form) {
 		ApiTaster.formAction = form.attr("action")
 	},
+
 	restoreFormActionFor: function(form) {
 		$(form).attr("action", ApiTaster.formAction);
 	},
+
 	detectContentType: function(response) {
 		var contentType = response.getResponseHeader("Content-Type");
 		var detectedContentType = null
@@ -22,9 +28,11 @@ var ApiTaster = {
 
 		return detectedContentType;
 	}
+
 };
 
 $.fn.extend({
+
 	replaceUrlParams: function(params) {
 		var form = this;
 
@@ -43,6 +51,7 @@ $.fn.extend({
 			}
 		});
 	},
+
 	enableNavTabsFor: function(contentElement) {
 		var container = this;
 
@@ -56,6 +65,7 @@ $.fn.extend({
 			$(contentElement + "[ref=" + $(this).attr("id") + "]", container).show();
 		});
 	},
+
 	showNavTab: function(name) {
 		$("ul.nav-tabs li", this).removeClass("active");
 		$("ul.nav-tabs li a#response-" + name, this).parent().show().addClass("active");
@@ -64,10 +74,12 @@ $.fn.extend({
 
 		return $("pre[ref=response-" + name + "]", this).show();
 	},
+
 	displayOnlySelectedParamsFieldset: function() {
 		$("fieldset", this).hide();
 		$("fieldset[ref=" + $("ul.nav-tabs li.active a").attr("id") + "]", this).show();
 	}
+
 });
 
 jQuery(function($) {
