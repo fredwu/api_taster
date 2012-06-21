@@ -1,6 +1,6 @@
 # ApiTaster [![Build Status](https://secure.travis-ci.org/fredwu/api_taster.png?branch=master)](http://travis-ci.org/fredwu/api_taster) [![Dependency Status](https://gemnasium.com/fredwu/api_taster.png)](https://gemnasium.com/fredwu/api_taster)
 
-A quick and easy way to visually test out your application's API.
+A quick and easy way to visually test out your Rails application's API.
 
 ![](http://i.imgur.com/ryjOH.png)
 
