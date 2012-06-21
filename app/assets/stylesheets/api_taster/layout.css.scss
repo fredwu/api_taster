@@ -3,10 +3,37 @@
 $colour_text: #333;
 $colour_grey: #999;
 
-body {
-  padding-top: 50px;
-  padding-bottom: 50px;
+// layout
+
+body, html {
+  height: 100%;
+  overflow: hidden;
 }
+
+body {
+}
+
+#wrapper {
+  height: 100%;
+
+  #main-container {
+    height: 100%;
+    overflow: hidden;
+    padding-top: 50px;
+  }
+}
+
+#list-api-div,
+#show-api-div {
+  height: 100%;
+  overflow: auto;
+
+  .div-container {
+    padding-bottom: 50px;
+  }
+}
+
+// elements
 
 .hidden {
   display: none;
@@ -22,9 +49,19 @@ legend {
   font-weight: bold;
   color: $colour_grey;
 
-  &.super-legend {
-    color: $colour_text;
+  &.compact-legend {
+    padding: 0;
+    font-size: 12px;
+    line-height: 24px;
   }
+}
+
+.nav-label {
+  padding: 8px 12px;
+  line-height: 18px;
+  margin-right: 5px;
+  font-weight: bold;
+  color: $colour_grey;
 }
 
 .label-api {

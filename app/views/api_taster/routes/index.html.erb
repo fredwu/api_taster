@@ -1,24 +1,28 @@
-<div class="row">
-  <div class="span5">
-    <ul class="well nav nav-list">
-      <% @routes.each do |controller, routes| %>
-        <li class="nav-header"><%= controller %></li>
-        <% routes.each do |route| %>
-          <li>
-            <a class="show-api" href="<%= route_path(route[:id]) %>">
-              <div class="label-api label-api-full">
-                <span class="label label-important"><%= route[:verb] %></span>
-              </div>
-              <strong><%= route[:path] %></strong>
-            </a>
-          </li>
+<div id="main-container" class="row">
+  <div id="list-api-div" class="span5">
+    <div class="div-container">
+      <ul class="well nav nav-list">
+        <% @routes.each do |controller, routes| %>
+          <li class="nav-header"><%= controller %></li>
+          <% routes.each do |route| %>
+            <li>
+              <a class="show-api" href="<%= route_path(route[:id]) %>">
+                <div class="label-api label-api-full">
+                  <span class="label label-important"><%= route[:verb] %></span>
+                </div>
+                <strong><%= route[:path] %></strong>
+              </a>
+            </li>
+          <% end %>
         <% end %>
-      <% end %>
-    </ul>
+      </ul>
+    </div>
   </div>
   <div id="show-api-div" class="span7">
-    <div class="alert alert-block alert-info">
-      <h3>Select an API endpoint on the left to get started. :)</h3>
+    <div class="div-container">
+      <div class="alert alert-block alert-info">
+        <h3>Select an API endpoint on the left to get started. :)</h3>
+      </div>
     </div>
   </div>
 </div>

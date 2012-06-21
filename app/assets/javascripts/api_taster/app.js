@@ -1,10 +1,10 @@
 var ApiTaster = {
 	formAction: '',
 	disableUrlParams: function() {
-		$("#url-params input").prop("disabled", true);
+		$("fieldset[ref=url-params] input").prop("disabled", true);
 	},
 	enableUrlParams: function() {
-		$("#url-params input").prop("disabled", false);
+		$("fieldset[ref=url-params] input").prop("disabled", false);
 	},
 	storeFormActionFor: function(form) {
 		ApiTaster.formAction = form.attr("action")
@@ -32,6 +32,23 @@ $.fn.extend({
 				form.attr("action", replacedAction);
 			}
 		});
+	},
+	enableNavTabsFor: function(contentElement) {
+		var container = this;
+
+		$("ul.nav-tabs a", container).click(function(e) {
+			e.preventDefault();
+
+			$(this).parent().siblings().removeClass("active");
+			$(this).parent().addClass("active");
+
+			$(contentElement, container).hide();
+			$(contentElement + "[ref=" + $(this).attr("id") + "]", container).show();
+		});
+	},
+	displayOnlySelectedParamsFieldset: function() {
+		$("fieldset", this).hide();
+		$("fieldset[ref=" + $("ul.nav-tabs li.active a").attr("id") + "]", this).show();
 	}
 });
 
@@ -42,8 +59,11 @@ jQuery(function($) {
 		$("a.show-api").parent().removeClass("active");
 		$(this).parent().addClass("active");
 
-		$("#show-api-div").load(this.href, function() {
+		$("#show-api-div .div-container").load(this.href, function() {
 			prettyPrint();
+
+			$("#show-api-div form").enableNavTabsFor("fieldset");
+			$("#show-api-div form").displayOnlySelectedParamsFieldset();
 		});
 	});
 
@@ -74,15 +94,7 @@ jQuery(function($) {
 			prettyPrint();
 		});
 
-		$("#show-api-response-div ul.nav-tabs a").click(function(e) {
-			e.preventDefault();
-
-			$(this).parent().siblings().removeClass("active");
-			$(this).parent().addClass("active");
-
-			$("pre", "#show-api-response-div").hide();
-			$("pre[ref=" + $(this).attr("id") + "]", "#show-api-response-div").show();
-		});
+		$("#show-api-response-div").enableNavTabsFor("pre");
 	});
 });
 

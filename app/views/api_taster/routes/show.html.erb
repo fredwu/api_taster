@@ -18,11 +18,20 @@
         <div class="alert alert-info">
           No params specified.
         </div>
+      <% else %>
+        <ul class="nav nav-tabs">
+          <li class="nav-label">Request</li>
+          <% if input[:url_params].present? %>
+            <li<% unless input[:post_params].present? %> class="active"<% end %>><a href="#" id="url-params">URL</a></li>
+          <% end %>
+          <% if input[:post_params].present? %>
+            <li class="active"><a href="#" id="post-params">POST</a></li>
+          <% end %>
+        </ul>
       <% end %>
 
       <% if input[:url_params].present? %>
-        <fieldset id="url-params">
-          <legend class="super-legend">URL Params</legend>
+        <fieldset ref="url-params">
           <% input[:url_params].each do |label, value| %>
             <%= render 'param_form_element', :label => "[api_taster_url_params]#{label}", :value => value, :label_text => label %>
           <% end %>
@@ -30,8 +39,7 @@
       <% end %>
 
       <% if input[:post_params].present? %>
-        <fieldset>
-          <legend class="super-legend">Post Params</legend>
+        <fieldset ref="post-params">
           <%= ApiTaster::FormBuilder.new(input[:post_params]).html.html_safe %>
         </fieldset>
       <% end %>
@@ -45,8 +53,8 @@
 <% end %>
 
 <div id="show-api-response-div" class="well hidden">
-  <legend class="super-legend">Response</legend>
   <ul class="nav nav-tabs">
+    <li class="nav-label">Response</li>
     <li class="active"><a href="#" id="response-json">JSON</a></li>
     <li><a href="#" id="response-raw">Raw</a></li>
   </ul>

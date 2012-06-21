@@ -13,7 +13,10 @@ ApiTaster.routes do
 
   post '/users', {
     :user => {
-      :name => 'Fred'
+      :name => 'Fred',
+      :comment => {
+        :title => 'hi!'
+      }
     }
   }
 
