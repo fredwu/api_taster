@@ -13,7 +13,8 @@ module ApiTaster
       FormBuilder.new({
         :hello => 'world',
         :nested => {
-          :foo => 'bar'
+          :foo => 'bar',
+          :integer => 1
         }
       })
     end
