@@ -1,7 +1,7 @@
 <pre class="prettyprint lang-rb">ApiTaster.routes do
 
     <% routes.each do |route| %>
-  <%= route[:verb].downcase %> '<%= route[:path] %>'<%= ", #{route[:params]}" if route[:params].present? %>
+  <%= route[:verb].downcase %> '<%= route[:path] %>', <%= route[:params] || '{}' %>
 
     <% end %>
 end</pre>
