@@ -48,6 +48,8 @@ $.fn.extend({
 				var replacedAction = ApiTaster.formAction.replace(regex, paramValue);
 
 				form.attr("action", replacedAction);
+			} else {
+				ApiTaster.storeFormActionFor(form);
 			}
 		});
 	},
