@@ -55,12 +55,8 @@ module ApiTaster
         inputs[route[:id]].collect { |input| split_input(input, route) }
       end
 
-      def calculate_missing_definitions
-        routes.each do |route|
-          if undefined_route?(route)
-            self.missing_definitions << route
-          end
-        end
+      def missing_definitions
+        routes.select { |route| undefined_route?(route) }
       end
 
       private
