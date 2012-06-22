@@ -72,6 +72,19 @@ module ApiTaster
       end
     end
 
+    it "#missing_definitions" do
+      routes = ActionDispatch::Routing::RouteSet.new
+      routes.draw do
+        get 'awesome_route' => 'awesome#route'
+      end
+      Rails.application.stub(:routes).and_return(routes)
+      ApiTaster.routes do
+        # nothing
+      end
+
+      Route.missing_definitions.first[:path].should == '/awesome_route'
+    end
+
     context "private methods" do
       it "#discover_rack_app" do
         klass = Class.new

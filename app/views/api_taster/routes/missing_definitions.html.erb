@@ -1,0 +1,12 @@
+<%= render 'breadcrumb',
+  :parent     => 'Information',
+  :current    => 'Missing Definitions Detected',
+  :label      => 'Warning',
+  :label_type => 'warning'
+%>
+
+<div class="alert alert-warning">
+  <p>The following route definitions are missing from <code>ApiTaster.routes</code>.</p>
+
+  <%= render 'route_definitions', :routes => @missing_definitions %>
+</div>

@@ -18,6 +18,12 @@ module ApiTaster
       assigns(:inputs).should be_kind_of(Array)
     end
 
+    it "#missing_definitions" do
+      get :missing_definitions, :use_route => :api_taster
+
+      assigns(:missing_definitions).should be_kind_of(Array)
+    end
+
     it "#obsolete_definitions" do
       get :obsolete_definitions, :use_route => :api_taster
 

@@ -6,7 +6,7 @@ module ApiTaster
       before(:all) do
         routes = ActionDispatch::Routing::RouteSet.new
         routes.draw do
-          # nothing
+          get '/awesome_route' => 'awesome#route'
         end
 
         ApiTaster.routes do

@@ -2,7 +2,7 @@
 
 A quick and easy way to visually test out your Rails application's API.
 
-![](http://i.imgur.com/ryjOH.png)
+![](http://i.imgur.com/8Dnto.png)
 
 ## Why?
 
@@ -67,19 +67,23 @@ if Rails.env.development?
 end
 ```
 
-That's it! Enjoy! :)
-
-## Share Params with Test Factories
+### Share Params with Test Factories
 
 If you use a test factory such as [FactoryGirl](https://github.com/thoughtbot/factory_girl), you can require your test factories and share the params. For example in FactoryGirl you can use the `attributes_for(:name_of_factory)` method.
 
-## Obsolete / Mismatched Route Definitions Detection
+### Missing Route Definitions Detection
+
+Instead of manually finding out which route definitions you need, API Taster provides a warning page that shows you all the missing definitions.
+
+![](http://i.imgur.com/vZb93.png)
+
+### Obsolete / Mismatched Route Definitions Detection
 
 APIs evolve - especially during the development stage. To keep `ApiTaster.routes` in sync with your route definitions, API Taster provides a warning page that shows you the definitions that are obsolete/mismatched therefore you could correct or remove them.
 
 ![](http://i.imgur.com/Fo7kQ.png)
 
-## Use with an Engine
+### Use with an Engine
 
 Rails Engines are largely self contained and separated from your main app. Therefore, to use API Taster with an Engine, you would need some extra efforts:
 

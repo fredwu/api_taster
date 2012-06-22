@@ -2,6 +2,7 @@ module ApiTaster
   class Route
     cattr_accessor :route_set
     cattr_accessor :inputs
+    cattr_accessor :missing_definitions
     cattr_accessor :obsolete_definitions
 
     class << self
@@ -50,7 +51,20 @@ module ApiTaster
         inputs[route[:id]].collect { |input| split_input(input, route) }
       end
 
+      def calculate_missing_definitions
+        routes.each do |route|
+          if undefined_route?(route)
+            self.missing_definitions << route
+          end
+        end
+      end
+
       private
+
+      def undefined_route?(route)
+        r = inputs_for(route)
+        r.is_a?(Hash) && r.has_key?(:undefined)
+      end
 
       def discover_rack_app(app)
         class_name = app.class.name.to_s
