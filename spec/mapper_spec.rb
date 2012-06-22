@@ -14,6 +14,7 @@ module ApiTaster
         end
 
         Route.route_set = routes
+        Route.map_routes
       end
 
       it "records obsolete definitions" do
@@ -31,6 +32,8 @@ module ApiTaster
         put '/dummy_users/:id', :id => 2
         delete '/dummy_users/:id', :id => 3
       end
+
+      Route.map_routes
     end
 
     it "gets users" do

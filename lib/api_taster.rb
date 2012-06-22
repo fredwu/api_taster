@@ -6,11 +6,7 @@ require 'api_taster/form_builder'
 
 module ApiTaster
   def self.routes(&block)
-    Route.route_set            = Rails.application.routes
-    Route.inputs               = {}
-    Route.obsolete_definitions = []
-
-    Mapper.instance_eval(&block)
+    Route.mappings = Proc.new { block }
   end
 
   class Exception < ::Exception; end

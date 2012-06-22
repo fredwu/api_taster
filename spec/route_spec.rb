@@ -26,7 +26,8 @@ module ApiTaster
         mount proc {} => '/rack_app'
       end
 
-      Route.route_set = routes
+      Rails.application.stub(:routes).and_return(routes)
+      Route.map_routes
     end
 
     it "#routes" do
@@ -88,6 +89,7 @@ module ApiTaster
       ApiTaster.routes do
         # nothing
       end
+      Route.map_routes
 
       Route.missing_definitions.first[:path].should == '/awesome_route'
     end

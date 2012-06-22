@@ -1,10 +1,19 @@
 module ApiTaster
   class Route
     cattr_accessor :route_set
+    cattr_accessor :mappings
     cattr_accessor :inputs
     cattr_accessor :obsolete_definitions
 
     class << self
+      def map_routes
+        self.route_set            = Rails.application.routes
+        self.inputs               = {}
+        self.obsolete_definitions = []
+
+        Mapper.instance_eval(&self.mappings.call)
+      end
+
       def routes
         _routes = []
         i = -1
