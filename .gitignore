@@ -1,5 +1,6 @@
 .DS_Store
 ._*
+.tags
 .bundle/
 coverage/
 log/*.log
