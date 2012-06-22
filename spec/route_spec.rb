@@ -33,6 +33,13 @@ module ApiTaster
       Route.routes.first.should == app_home_route
     end
 
+    context "undefined ApiTaster.routes" do
+      it "errors out" do
+        Route.route_set = nil
+        expect { Route.routes }.to raise_exception(ApiTaster::Exception)
+      end
+    end
+
     it "#grouped_routes" do
       Route.grouped_routes.has_key?('application').should == true
       Route.grouped_routes.has_key?('users').should == true

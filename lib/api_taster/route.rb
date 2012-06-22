@@ -10,6 +10,10 @@ module ApiTaster
         _routes = []
         i = -1
 
+        unless route_set.respond_to?(:routes)
+          raise ApiTaster::Exception.new('Route definitions are missing, have you defined ApiTaster.routes?')
+        end
+
         route_set.routes.each do |route|
           next if route.app.is_a?(Sprockets::Environment)
           next if route.app == ApiTaster::Engine

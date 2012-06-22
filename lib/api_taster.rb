@@ -15,4 +15,6 @@ module ApiTaster
 
     Route.calculate_missing_definitions
   end
+
+  class Exception < ::Exception; end
 end
