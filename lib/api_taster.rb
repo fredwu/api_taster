@@ -1,3 +1,5 @@
+require 'jquery-rails'
+require 'bootstrap-sass'
 require 'active_support/dependencies'
 require 'api_taster/engine'
 require 'api_taster/route'

@@ -83,23 +83,6 @@ APIs evolve - especially during the development stage. To keep `ApiTaster.routes
 
 ![](http://i.imgur.com/qK7g5.png)
 
-### Use with an Engine
-
-Rails Engines are largely self contained and separated from your main app. Therefore, to use API Taster with an Engine, you would need some extra efforts:
-
-In your app Gemfile, you would also need:
-
-```ruby
-gem "jquery-rails"
-gem "bootstrap-sass"
-```
-
-If you are hand-picking Rails components, make sure in your `application.rb` you have Sprockets enabled:
-
-```ruby
-require "sprockets/railtie"
-```
-
 ## License
 
 This gem is released under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
