@@ -29,17 +29,25 @@ module ApiTaster
           )
 
           add_to_buffer(value, parent_labels)
+        elsif value.is_a?(Array)
+          value.each do |v|
+            add_element_to_buffer(parent_labels, "[#{label}][]", v)
+          end
         else
-          @_buffer += render(
-            :partial => 'api_taster/routes/param_form_element',
-            :locals  => {
-              :label      => "#{print_labels(parent_labels)}#{label}",
-              :label_text => label,
-              :value      => value.to_s
-            }
-          )
+          add_element_to_buffer(parent_labels, label, value)
         end
       end
+    end
+
+    def add_element_to_buffer(parent_labels, label, value)
+      @_buffer += render(
+        :partial => 'api_taster/routes/param_form_element',
+        :locals  => {
+          :label      => "#{print_labels(parent_labels)}#{label}",
+          :label_text => label,
+          :value      => value.to_s
+        }
+      )
     end
 
     def print_labels(parent_labels)

@@ -19,7 +19,7 @@ ApiTaster.routes do
     :user => {
       :name => 'Fred',
       :comment => {
-        :title => 'hi!'
+        :title => [1, 2, 3]
       }
     }
   }

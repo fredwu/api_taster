@@ -14,7 +14,8 @@ module ApiTaster
         :hello => 'world',
         :nested => {
           :foo => 'bar',
-          :integer => 1
+          :integer => 1,
+          :array => [1, 2, 3]
         }
       })
     end
@@ -25,6 +26,20 @@ module ApiTaster
 
     it "outputs html" do
       builder.html.should match('bar')
+    end
+
+    context "data types" do
+      it "does strings" do
+        builder.html.should match('value="world"')
+      end
+
+      it "does numbers" do
+        builder.html.should match('value="1"')
+      end
+
+      it "does arrays" do
+        builder.html.should match(/name="\[nested\]\[array\]\[\]" value="2"/)
+      end
     end
   end
 end
