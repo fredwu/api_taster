@@ -1,6 +1,7 @@
 module ApiTaster
   class Route
     cattr_accessor :route_set
+    cattr_accessor :routes
     cattr_accessor :mappings
     cattr_accessor :inputs
     cattr_accessor :obsolete_definitions
@@ -11,11 +12,13 @@ module ApiTaster
         self.inputs               = {}
         self.obsolete_definitions = []
 
+        normalise_routes!
+
         Mapper.instance_eval(&self.mappings.call)
       end
 
-      def routes
-        _routes = []
+      def normalise_routes!
+        self.routes = []
         i = -1
 
         unless route_set.respond_to?(:routes)
@@ -28,16 +31,14 @@ module ApiTaster
 
           if (rack_app = discover_rack_app(route.app)) && rack_app.respond_to?(:routes)
             rack_app.routes.routes.each do |rack_route|
-              _routes << normalise_route(rack_route, i+=1)
+              self.routes << normalise_route(rack_route, i+=1)
             end
           end
 
           next if route.verb.source.empty?
 
-          _routes << normalise_route(route, i+=1)
+          self.routes << normalise_route(route, i+=1)
         end
-
-        _routes
       end
 
       def grouped_routes

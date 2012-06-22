@@ -37,7 +37,7 @@ module ApiTaster
     context "undefined ApiTaster.routes" do
       it "errors out" do
         Route.route_set = nil
-        expect { Route.routes }.to raise_exception(ApiTaster::Exception)
+        expect { Route.normalise_routes! }.to raise_exception(ApiTaster::Exception)
       end
     end
 
