@@ -81,7 +81,7 @@ Instead of manually finding out which route definitions you need, API Taster pro
 
 APIs evolve - especially during the development stage. To keep `ApiTaster.routes` in sync with your route definitions, API Taster provides a warning page that shows you the definitions that are obsolete/mismatched therefore you could correct or remove them.
 
-![](http://i.imgur.com/Fo7kQ.png)
+![](http://i.imgur.com/qK7g5.png)
 
 ### Use with an Engine
 
