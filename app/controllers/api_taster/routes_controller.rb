@@ -1,5 +1,5 @@
 module ApiTaster
-  class RoutesController < ApplicationController
+  class RoutesController < ApiTaster::ApplicationController
     before_filter :map_routes
 
     def index
