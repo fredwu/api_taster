@@ -10,7 +10,7 @@ module ApiTaster
 
     it "#show" do
       Route.stub(:find).and_return(Route.new)
-      Route.stub(:inputs_for).and_return([])
+      Route.stub(:params_for).and_return([])
 
       get :show, :id => 1, :use_route => :api_taster
 

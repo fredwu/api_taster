@@ -3,13 +3,13 @@ module ApiTaster
     cattr_accessor :route_set
     cattr_accessor :routes
     cattr_accessor :mappings
-    cattr_accessor :inputs
+    cattr_accessor :supplied_params
     cattr_accessor :obsolete_definitions
 
     class << self
       def map_routes
         self.route_set            = Rails.application.routes
-        self.inputs               = {}
+        self.supplied_params      = {}
         self.obsolete_definitions = []
 
         normalise_routes!
@@ -56,12 +56,12 @@ module ApiTaster
         end[0]
       end
 
-      def inputs_for(route)
-        unless inputs.has_key?(route[:id])
+      def params_for(route)
+        unless supplied_params.has_key?(route[:id])
           return { :undefined => route }
         end
 
-        inputs[route[:id]].collect { |input| split_input(input, route) }
+        supplied_params[route[:id]].collect { |input| split_input(input, route) }
       end
 
       def missing_definitions
@@ -71,7 +71,7 @@ module ApiTaster
       private
 
       def undefined_route?(route)
-        r = inputs_for(route)
+        r = params_for(route)
         r.is_a?(Hash) && r.has_key?(:undefined)
       end
 

@@ -29,8 +29,8 @@ module ApiTaster
             :params => params
           }
         else
-          Route.inputs[route[:id]] ||= []
-          Route.inputs[route[:id]] << params
+          Route.supplied_params[route[:id]] ||= []
+          Route.supplied_params[route[:id]] << params
         end
       end
     end

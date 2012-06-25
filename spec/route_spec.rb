@@ -59,7 +59,7 @@ module ApiTaster
       Route.find_by_verb_and_path(:delete, '/home').should == nil
     end
 
-    it "#inputs_for" do
+    it "#params_for" do
       Route.stub(:routes).and_return([{
         :id   => 0,
         :path => '/dummy/:dummy_id'
@@ -68,12 +68,12 @@ module ApiTaster
         :path => 'a_non_existing_dummy',
         :verb => 'get'
       }])
-      Route.inputs[0] = [{ :dummy_id => 1, :hello => 'world' }]
+      Route.supplied_params[0] = [{ :dummy_id => 1, :hello => 'world' }]
 
-      Route.inputs_for(Route.find(999)).should have_key(:undefined)
+      Route.params_for(Route.find(999)).should have_key(:undefined)
 
       2.times do
-        Route.inputs_for(Route.find(0)).should == [{
+        Route.params_for(Route.find(0)).should == [{
           :url_params  => { :dummy_id => 1 },
           :post_params => { :hello => 'world' }
         }]
