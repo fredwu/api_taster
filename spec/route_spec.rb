@@ -2,9 +2,16 @@ require 'spec_helper'
 
 module ApiTaster
   describe Route do
+    context "undefined ApiTaster.routes" do
+      it "errors out" do
+        Route.route_set = nil
+        expect { Route.normalise_routes! }.to raise_exception(ApiTaster::Exception)
+      end
+    end
+
     let(:app_home_route) do
       {
-        :id   => 0,
+        :id   => 1,
         :name => 'home',
         :verb => 'GET',
         :path => '/home',
@@ -19,6 +26,7 @@ module ApiTaster
       routes = ActionDispatch::Routing::RouteSet.new
       routes.draw do
         get 'home' => 'application#home', :as => :home
+        match 'dual_action' => 'dummy/action', :via => [:get, :delete]
         resources :users do
           resources :comments
         end
@@ -34,11 +42,9 @@ module ApiTaster
       Route.routes.first.should == app_home_route
     end
 
-    context "undefined ApiTaster.routes" do
-      it "errors out" do
-        Route.route_set = nil
-        expect { Route.normalise_routes! }.to raise_exception(ApiTaster::Exception)
-      end
+    it "outputs routes for all verbs" do
+      Route.find_by_verb_and_path(:get, '/dual_action').should_not == nil
+      Route.find_by_verb_and_path(:delete, '/dual_action').should_not == nil
     end
 
     it "#grouped_routes" do
@@ -49,7 +55,7 @@ module ApiTaster
     end
 
     it "#find" do
-      Route.find(0).should == app_home_route
+      Route.find(1).should == app_home_route
       Route.find(999).should == nil
     end
 

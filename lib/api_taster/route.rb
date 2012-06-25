@@ -7,6 +7,7 @@ module ApiTaster
     cattr_accessor :obsolete_definitions
 
     class << self
+
       def map_routes
         self.route_set            = Rails.application.routes
         self.supplied_params      = {}
@@ -18,8 +19,8 @@ module ApiTaster
       end
 
       def normalise_routes!
+        @_route_counter = 0
         self.routes = []
-        i = -1
 
         unless route_set.respond_to?(:routes)
           raise ApiTaster::Exception.new('Route definitions are missing, have you defined ApiTaster.routes?')
@@ -31,14 +32,16 @@ module ApiTaster
 
           if (rack_app = discover_rack_app(route.app)) && rack_app.respond_to?(:routes)
             rack_app.routes.routes.each do |rack_route|
-              self.routes << normalise_route(rack_route, i+=1)
+              self.routes << normalise_route(rack_route)
             end
           end
 
           next if route.verb.source.empty?
 
-          self.routes << normalise_route(route, i+=1)
+          self.routes << normalise_route(route)
         end
+
+        self.routes.flatten!
       end
 
       def grouped_routes
@@ -84,14 +87,16 @@ module ApiTaster
         end
       end
 
-      def normalise_route(route, id)
-        {
-          :id   => id,
-          :name => route.name,
-          :verb => route.verb.source.gsub(/[$^]/, ''),
-          :path => route.path.spec.to_s.sub('(.:format)', ''),
-          :reqs => route.requirements
-        }
+      def normalise_route(route)
+        route.verb.source.split('|').map do |verb|
+          {
+            :id   => @_route_counter+=1,
+            :name => route.name,
+            :verb => verb.gsub(/[$^]/, ''),
+            :path => route.path.spec.to_s.sub('(.:format)', ''),
+            :reqs => route.requirements
+          }
+        end
       end
 
       def split_input(input, route)

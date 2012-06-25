@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   mount ApiTaster::Engine => "/api_taster"
 
   get 'home' => 'application#home', :as => :home
+  match 'custom' => 'application#home', :via => [:get, :delete]
 
   resources :users, :except => [:new, :edit] do
     resources :comments, :only => [:new, :edit]
