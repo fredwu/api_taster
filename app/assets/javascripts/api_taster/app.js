@@ -36,22 +36,22 @@ $.fn.extend({
 	replaceUrlParams: function(params) {
 		var form = this;
 
+		ApiTaster.storeFormActionFor(form);
+
+		var formAction = form.attr("action");
+
 		$.each(params, function(i, param) {
 			var matches = param["name"].match(/\[api_taster_url_params\](.*)/)
 			if (matches) {
 				var paramKey   = matches[1];
 				var paramValue = param["value"];
+				var regex      = new RegExp(":" + paramKey);
 
-				ApiTaster.storeFormActionFor(form);
-
-				var regex = new RegExp(":" + paramKey);
-				var replacedAction = ApiTaster.formAction.replace(regex, paramValue);
-
-				form.attr("action", replacedAction);
-			} else {
-				ApiTaster.storeFormActionFor(form);
+				formAction = formAction.replace(regex, paramValue);
 			}
 		});
+
+		form.attr("action", formAction);
 	},
 
 	enableNavTabsFor: function(contentElement) {
