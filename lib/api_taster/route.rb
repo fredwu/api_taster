@@ -97,7 +97,7 @@ module ApiTaster
       def split_input(input, route)
         url_param_keys = route[:path].scan /:\w+/
 
-        url_params  = input.select { |k| ":#{k}".in?(url_param_keys) }
+        url_params  = input.reject { |k, v| ! ":#{k}".in?(url_param_keys) }
         post_params = input.diff(url_params)
 
         {
