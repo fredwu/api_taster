@@ -1,6 +1,6 @@
 # ApiTaster [![Build Status](https://secure.travis-ci.org/fredwu/api_taster.png?branch=master)](http://travis-ci.org/fredwu/api_taster) [![Dependency Status](https://gemnasium.com/fredwu/api_taster.png)](https://gemnasium.com/fredwu/api_taster)
 
-A quick and easy way to visually test out your Rails application's API.
+A quick and easy way to visually test your Rails application's API.
 
 ![](http://i.imgur.com/8Dnto.png)
 
@@ -11,8 +11,8 @@ There are already many awesome API clients (such as [Postman](https://chrome.goo
 API Taster compared to alternatives, have the following advantages:
 
 - API endpoints are automatically generated from your Rails routes definition
-- Defining post params is as easy as defining routes
-- Post params can be shared with your test factories
+- Defining params is as easy as defining routes
+- Params can be shared with your test factories
 
 ## Usage
 
