@@ -10,7 +10,7 @@ module ApiTaster
 
     def show
       @route  = Route.find(params[:id])
-      @inputs = Route.params_for(@route)
+      @params = Route.params_for(@route)
     end
 
     def missing_definitions

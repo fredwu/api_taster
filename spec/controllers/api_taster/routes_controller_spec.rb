@@ -15,7 +15,7 @@ module ApiTaster
       get :show, :id => 1, :use_route => :api_taster
 
       assigns(:route).should be_kind_of(Route)
-      assigns(:inputs).should be_kind_of(Array)
+      assigns(:params).should be_kind_of(Array)
     end
 
     it "#missing_definitions" do

@@ -5,39 +5,39 @@
   :label_type => 'important'
 %>
 
-<% if @inputs.is_a?(Hash) && @inputs.has_key?(:undefined) %>
-  <%= render 'undefined_route', :route => @inputs[:undefined] %>
+<% if @params.is_a?(Hash) && @params.has_key?(:undefined) %>
+  <%= render 'undefined_route', :route => @params[:undefined] %>
 <% else %>
-  <% @inputs.each do |input| %>
+  <% @params.each do |param| %>
     <%= form_tag @route[:path], :method => @route[:verb], :class => 'well form-horizontal', :remote => true do %>
 
-      <% if input[:url_params].empty? && input[:post_params].empty? %>
+      <% if param[:url_params].empty? && param[:post_params].empty? %>
         <div class="alert alert-info">
           No params specified.
         </div>
       <% else %>
         <ul class="nav nav-tabs">
           <li class="nav-label">Request</li>
-          <% if input[:url_params].present? %>
-            <li<% unless input[:post_params].present? %> class="active"<% end %>><a href="#" id="url-params">URL</a></li>
+          <% if param[:url_params].present? %>
+            <li<% unless param[:post_params].present? %> class="active"<% end %>><a href="#" id="url-params">URL</a></li>
           <% end %>
-          <% if input[:post_params].present? %>
+          <% if param[:post_params].present? %>
             <li class="active"><a href="#" id="post-params">POST</a></li>
           <% end %>
         </ul>
       <% end %>
 
-      <% if input[:url_params].present? %>
+      <% if param[:url_params].present? %>
         <fieldset ref="url-params">
-          <% input[:url_params].each do |label, value| %>
+          <% param[:url_params].each do |label, value| %>
             <%= render 'param_form_element', :label => "[api_taster_url_params]#{label}", :value => value, :label_text => label %>
           <% end %>
         </fieldset>
       <% end %>
 
-      <% if input[:post_params].present? %>
+      <% if param[:post_params].present? %>
         <fieldset ref="post-params">
-          <%= ApiTaster::FormBuilder.new(input[:post_params]).html.html_safe %>
+          <%= ApiTaster::FormBuilder.new(param[:post_params]).html.html_safe %>
         </fieldset>
       <% end %>
 
