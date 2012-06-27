@@ -19,7 +19,7 @@ API Taster compared to alternatives, have the following advantages:
 Add API Taster in your gemfile:
 
 ```ruby
-gem 'api_taster', :group => :development
+gem 'api_taster'
 ```
 Mount API Taster, this will allow you to visit API Taster from within your app. For example:
 
