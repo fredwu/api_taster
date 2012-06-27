@@ -42,6 +42,10 @@ module ApiTaster
       Route.routes.first.should == app_home_route
     end
 
+    it "finds rack app routes" do
+      Route.find_by_verb_and_path(:get, '/app/home').should_not == nil
+    end
+
     it "outputs routes for all verbs" do
       Route.find_by_verb_and_path(:get, '/dual_action').should_not == nil
       Route.find_by_verb_and_path(:delete, '/dual_action').should_not == nil

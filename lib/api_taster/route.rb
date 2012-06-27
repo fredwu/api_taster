@@ -32,7 +32,7 @@ module ApiTaster
 
           if (rack_app = discover_rack_app(route.app)) && rack_app.respond_to?(:routes)
             rack_app.routes.routes.each do |rack_route|
-              self.routes << normalise_route(rack_route)
+              self.routes << normalise_route(rack_route, route.path.spec)
             end
           end
 
@@ -87,13 +87,13 @@ module ApiTaster
         end
       end
 
-      def normalise_route(route)
+      def normalise_route(route, path_prefix = nil)
         route.verb.source.split('|').map do |verb|
           {
             :id   => @_route_counter+=1,
             :name => route.name,
             :verb => verb.gsub(/[$^]/, ''),
-            :path => route.path.spec.to_s.sub('(.:format)', ''),
+            :path => path_prefix.to_s + route.path.spec.to_s.sub('(.:format)', ''),
             :reqs => route.requirements
           }
         end
