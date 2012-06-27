@@ -24,7 +24,27 @@ module ApiTaster
 
     before(:all) do
       Rails.application.routes.draw { resources :dummy_users }
+    end
 
+    context "#global_params" do
+      before(:all) do
+        ApiTaster.global_params = { :foo => 'bar' }
+
+        ApiTaster.routes do
+          get '/dummy_users/:id', :id => 1
+        end
+
+        Route.map_routes
+      end
+
+      it "merges params" do
+        route = Route.find_by_verb_and_path(:get, '/dummy_users/:id')
+
+        Route.supplied_params[route[:id]].should == [{ :foo => 'bar', :id => 1 }]
+      end
+    end
+
+    before(:all) do
       ApiTaster.routes do
         get '/dummy_users/:id', :id => 1
         post '/dummy_users'

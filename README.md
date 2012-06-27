@@ -63,6 +63,21 @@ end
 
 If you use a test factory such as [FactoryGirl](https://github.com/thoughtbot/factory_girl), you can require your test factories and share the params. For example in FactoryGirl you can use the `attributes_for(:name_of_factory)` method.
 
+### Global Params
+
+If there are certain params (such as API version and auth token) that need to be present in every API endpoint, you may set them in `ApiTaster.global_params` before `ApiTaster.routes`:
+
+```ruby
+ApiTaster.global_params = {
+  :version    => 1,
+  :auth_token => 'teGpfbVitpnUwm7qStf9'
+}
+
+ApiTaster.routes do
+  # your route definitions
+end
+```
+
 ### Missing Route Definitions Detection
 
 Instead of manually finding out which route definitions you need, API Taster provides a warning page that shows you all the missing definitions.

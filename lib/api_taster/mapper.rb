@@ -30,7 +30,7 @@ module ApiTaster
           }
         else
           Route.supplied_params[route[:id]] ||= []
-          Route.supplied_params[route[:id]] << params
+          Route.supplied_params[route[:id]] << ApiTaster.global_params.merge(params)
         end
       end
     end

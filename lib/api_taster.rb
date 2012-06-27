@@ -7,6 +7,9 @@ require 'api_taster/mapper'
 require 'api_taster/form_builder'
 
 module ApiTaster
+  mattr_accessor :global_params
+  @@global_params = {}
+
   def self.routes(&block)
     Route.mappings = Proc.new { block }
   end
