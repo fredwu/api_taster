@@ -38,6 +38,10 @@ module ApiTaster
       Route.map_routes
     end
 
+    it "lazy loads the mapping" do
+      Route.mappings.should be_kind_of(Proc)
+    end
+
     it "#routes" do
       Route.routes.first.should == app_home_route
     end
