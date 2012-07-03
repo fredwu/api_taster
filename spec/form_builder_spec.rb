@@ -21,11 +21,11 @@ module ApiTaster
         :items => [
           { :name => 'flower', :price => '4.95' },
           { :name => 'pot', :price => '2.45' },
-          :nested_items => [
+          { :nested_items => [
             { :name => 'apple' },
             { :name => 'orange'},
-            :nested_numbers => [3, 4, 5]
-          ]
+            { :nested_numbers => [3, 4, 5] }
+          ]}
         ]
       })
     end
