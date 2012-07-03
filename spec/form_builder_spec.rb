@@ -12,11 +12,21 @@ module ApiTaster
     let(:builder) do
       FormBuilder.new({
         :hello => 'world',
-        :nested => {
-          :foo => 'bar',
-          :integer => 1,
-          :array => [1, 2, 3]
-        }
+        :user => {
+          :name => 'Fred',
+          :comment => {
+            :title => [1, 2, 3]
+          }
+        },
+        :items => [
+          { :name => 'flower', :price => '4.95' },
+          { :name => 'pot', :price => '2.45' },
+          :nested_items => [
+            { :name => 'apple' },
+            { :name => 'orange'},
+            :nested_numbers => [3, 4, 5]
+          ]
+        ]
       })
     end
 
@@ -25,7 +35,7 @@ module ApiTaster
     end
 
     it "outputs html" do
-      builder.html.should match('bar')
+      builder.html.should match('world')
     end
 
     context "data types" do
@@ -38,7 +48,11 @@ module ApiTaster
       end
 
       it "does arrays" do
-        builder.html.should match(/name="\[nested\]\[array\]\[\]" value="2"/)
+        builder.html.should match(/name="\[user\]\[comment\]\[title\]\[\]" value="1"/)
+      end
+
+      it "does nested arrays" do
+        builder.html.should match(/name="\[items\]\[nested_items\]\[nested_numbers\]\[\]" value="5"/)
       end
     end
   end
