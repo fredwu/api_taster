@@ -2,6 +2,14 @@ var ApiTaster = {
 
 	formAction: '',
 
+	disableSubmitButton: function() {
+		$("#submit-api").attr("disabled", true);
+	},
+
+	enableSubmitButton: function() {
+		$("#submit-api").attr("disabled", false);
+	},
+
 	disableUrlParams: function() {
 		$("fieldset[ref=url-params] input").prop("disabled", true);
 	},
@@ -101,6 +109,8 @@ jQuery(function($) {
 
 	$("#show-api-div").on("click", "#submit-api", function() {
 		$(this).parents("form").submit(function() {
+			ApiTaster.disableSubmitButton();
+
 			$(this).unbind("submit").ajaxSubmit({
 				beforeSubmit: function(arr, $form, options) {
 					$form.replaceUrlParams(arr);
@@ -111,6 +121,7 @@ jQuery(function($) {
 		});
 
 		$("form").bind("ajax:complete", function(e, xhr, status) {
+			ApiTaster.enableSubmitButton();
 			ApiTaster.enableUrlParams();
 			ApiTaster.restoreFormActionFor(this);
 
