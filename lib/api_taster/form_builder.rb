@@ -20,6 +20,8 @@ module ApiTaster
 
     def add_to_buffer(params, parent_labels = [])
       params.each do |label, value|
+        label = "[#{label}]"
+
         new_parent_labels = parent_labels.clone << label
 
         if value.is_a?(Hash)
@@ -31,9 +33,9 @@ module ApiTaster
             if v.is_a?(Hash)
               add_legend_to_buffer(parent_labels, label)
 
-              add_to_buffer(v, new_parent_labels)
+              add_to_buffer(v, parent_labels.clone << "#{label}[]")
             else
-              add_element_to_buffer(parent_labels, "[#{label}][]", v)
+              add_element_to_buffer(parent_labels, "#{label}[]", v)
             end
           end
         else
@@ -61,7 +63,7 @@ module ApiTaster
     end
 
     def print_labels(parent_labels)
-      "[#{parent_labels * ']['}]"
+      "#{parent_labels * ''}"
     end
   end
 end

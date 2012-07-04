@@ -52,7 +52,8 @@ module ApiTaster
       end
 
       it "does nested arrays" do
-        builder.html.should match(/name="\[items\]\[nested_items\]\[nested_numbers\]\[\]" value="5"/)
+        builder.html.should match(/name="\[items\]\[\]\[nested_items\]\[\]\[nested_numbers\]\[\]" value="5"/)
+        builder.html.should match(/name="\[items\]\[\]\[nested_items\]\[\]\[name\]" value="apple"/)
       end
     end
   end
