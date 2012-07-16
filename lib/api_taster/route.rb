@@ -49,14 +49,14 @@ module ApiTaster
       end
 
       def find(id)
-        routes.select { |r| r[:id] == id.to_i }[0]
+        routes.find { |r| r[:id] == id.to_i }
       end
 
       def find_by_verb_and_path(verb, path)
-        routes.select do |r|
+        routes.find do |r|
           r[:path].to_s == path &&
           r[:verb].to_s.downcase == verb.to_s.downcase
-        end[0]
+        end
       end
 
       def params_for(route)
