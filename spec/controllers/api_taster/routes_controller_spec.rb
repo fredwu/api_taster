@@ -2,6 +2,16 @@ require 'spec_helper'
 
 module ApiTaster
   describe RoutesController do
+    context "missing ApiTaster.routes" do
+      it "#index" do
+        Route.stub(:mappings).and_return(nil)
+        get :index, :use_route => :api_taster
+
+        response.should be_success
+        assigns(:routes).should be_kind_of(Hash)
+      end
+    end
+
     it "#index" do
       get :index, :use_route => :api_taster
 

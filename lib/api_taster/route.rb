@@ -15,7 +15,11 @@ module ApiTaster
 
         normalise_routes!
 
-        Mapper.instance_eval(&self.mappings.call)
+        begin
+          Mapper.instance_eval(&self.mappings.call)
+        rescue
+          Route.mappings = {}
+        end
       end
 
       def normalise_routes!
