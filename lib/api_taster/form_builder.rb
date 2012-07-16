@@ -8,7 +8,7 @@ module ApiTaster
 
     def initialize(params)
       flush_output_buffer
-      @_buffer = ''
+      @_buffer = '<legend class="hero-legend"></legend>'
       add_to_buffer(params)
     end
 
@@ -20,7 +20,9 @@ module ApiTaster
 
     def add_to_buffer(params, parent_labels = [])
       params.each do |label, value|
-        label = "[#{label}]"
+        if parent_labels.present?
+          label = "[#{label}]"
+        end
 
         new_parent_labels = parent_labels.clone << label
 

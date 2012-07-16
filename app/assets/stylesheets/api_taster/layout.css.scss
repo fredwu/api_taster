@@ -54,6 +54,11 @@ legend {
     font-size: 12px;
     line-height: 24px;
   }
+
+  &.hero-legend {
+    margin: 0;
+    border: none;
+  }
 }
 
 .nav-label {
