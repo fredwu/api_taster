@@ -17,12 +17,23 @@ ApiTaster.routes do
   get '/users'
 
   post '/users', {
+    :hello => 'world',
     :user => {
       :name => 'Fred',
       :comment => {
         :title => [1, 2, 3]
       }
-    }
+    },
+    :items => [
+      { :name => 'flower', :price => '4.95' },
+      { :name => 'pot', :price => '2.45' },
+      { :nested_items => [
+        { :name => 'apple' },
+        { :name => 'orange'},
+        { :nested_numbers => [3, 4, 5] },
+        { :name => 'banana'}
+      ]}
+    ]
   }
 
   get '/users/:id', {

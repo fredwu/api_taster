@@ -56,10 +56,12 @@ module ApiTaster
     end
 
     it "#grouped_routes" do
+      home_route = Route.find_by_verb_and_path(:get, '/app/home')
+      Route.supplied_params[home_route[:id]] = {}
+
       Route.grouped_routes.has_key?('application').should == true
-      Route.grouped_routes.has_key?('users').should == true
-      Route.grouped_routes.has_key?('comments').should == true
-      Route.grouped_routes['application'][0].should == app_home_route
+      Route.grouped_routes.has_key?('users').should == false
+      Route.grouped_routes.has_key?('comments').should == false
     end
 
     it "#find" do
@@ -94,7 +96,7 @@ module ApiTaster
       end
     end
 
-    it "#missing_definitions" do
+    it "#missing_definitions and #defined_definitions" do
       routes = ActionDispatch::Routing::RouteSet.new
       routes.draw do
         get 'awesome_route' => 'awesome#route'
@@ -106,6 +108,7 @@ module ApiTaster
       Route.map_routes
 
       Route.missing_definitions.first[:path].should == '/awesome_route'
+      Route.defined_definitions.should == Route.routes - Route.missing_definitions
     end
 
     context "private methods" do

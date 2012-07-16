@@ -45,7 +45,7 @@ module ApiTaster
       end
 
       def grouped_routes
-        routes.group_by { |r| r[:reqs][:controller] }
+        defined_definitions.group_by { |r| r[:reqs][:controller] }
       end
 
       def find(id)
@@ -65,6 +65,10 @@ module ApiTaster
         end
 
         supplied_params[route[:id]].collect { |input| split_input(input, route) }
+      end
+
+      def defined_definitions
+        routes.reject { |route| undefined_route?(route) }
       end
 
       def missing_definitions
