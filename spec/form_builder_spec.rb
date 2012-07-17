@@ -48,12 +48,12 @@ module ApiTaster
       end
 
       it "does arrays" do
-        builder.html.should match(/name="\[user\]\[comment\]\[title\]\[\]" value="1"/)
+        builder.html.should match(/name="user\[comment\]\[title\]\[\]" value="1"/)
       end
 
       it "does nested arrays" do
-        builder.html.should match(/name="\[items\]\[\]\[nested_items\]\[\]\[nested_numbers\]\[\]" value="5"/)
-        builder.html.should match(/name="\[items\]\[\]\[nested_items\]\[\]\[name\]" value="apple"/)
+        builder.html.should match(/name="items\[\]\[nested_items\]\[\]\[nested_numbers\]\[\]" value="5"/)
+        builder.html.should match(/name="items\[\]\[nested_items\]\[\]\[name\]" value="apple"/)
       end
     end
   end

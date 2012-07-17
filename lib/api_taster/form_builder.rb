@@ -8,12 +8,12 @@ module ApiTaster
 
     def initialize(params)
       flush_output_buffer
-      @_buffer = '<legend class="hero-legend"></legend>'
+      @_buffer = ''
       add_to_buffer(params)
     end
 
     def html
-      @_buffer
+      "<legend class=\"hero-legend\"></legend>#{@_buffer}"
     end
 
     private

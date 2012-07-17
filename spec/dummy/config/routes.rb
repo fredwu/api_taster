@@ -10,10 +10,6 @@ Rails.application.routes.draw do
 end
 
 ApiTaster.routes do
-  ApiTaster.global_params = {
-    :version => 1
-  }
-
   get '/i_dont_exist_anymore', {
     :hello => 'world'
   }
