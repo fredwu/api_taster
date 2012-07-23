@@ -1,5 +1,7 @@
 module ApiTaster
   class Mapper
+    cattr_accessor :last_desc
+
     class << self
       def get(path, params = {})
         map_method(:get, path, params)
@@ -17,6 +19,10 @@ module ApiTaster
         map_method(:delete, path, params)
       end
 
+      def desc(text)
+        self.last_desc = text
+      end
+
       private
 
       def map_method(method, path, params)
@@ -31,6 +37,10 @@ module ApiTaster
         else
           Route.supplied_params[route[:id]] ||= []
           Route.supplied_params[route[:id]] << ApiTaster.global_params.merge(params)
+          unless last_desc.nil?
+            Route.comments[route[:id]] = last_desc
+            self.last_desc = nil
+          end
         end
       end
     end

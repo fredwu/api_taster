@@ -5,6 +5,7 @@ module ApiTaster
     cattr_accessor :mappings
     cattr_accessor :supplied_params
     cattr_accessor :obsolete_definitions
+    cattr_accessor :comments
 
     class << self
 
@@ -12,6 +13,7 @@ module ApiTaster
         self.route_set            = Rails.application.routes
         self.supplied_params      = {}
         self.obsolete_definitions = []
+        self.comments             = []
 
         normalise_routes!
 
@@ -69,6 +71,10 @@ module ApiTaster
         end
 
         supplied_params[route[:id]].collect { |input| split_input(input, route) }
+      end
+
+      def comment_for(id)
+        self.comments[id.to_i]
       end
 
       def defined_definitions
