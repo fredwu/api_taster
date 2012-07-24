@@ -96,6 +96,12 @@ module ApiTaster
       end
     end
 
+    it "#comment_for" do
+      markdown_comment = "Heading\n=======\n * List item 1\n * List item 2"
+      Route.comments[42] = markdown_comment
+      Route.comment_for(42).should eq(markdown)
+    end
+
     it "#missing_definitions and #defined_definitions" do
       routes = ActionDispatch::Routing::RouteSet.new
       routes.draw do
