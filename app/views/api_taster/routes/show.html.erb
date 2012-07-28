@@ -8,6 +8,13 @@
 <% if @params.is_a?(Hash) && @params.has_key?(:undefined) %>
   <%= render 'undefined_route', :route => @params[:undefined] %>
 <% else %>
+
+  <% if @comment %>
+    <div class="well">
+      <%= markdown @comment %>
+    </div>
+  <% end %>
+
   <% @params.each do |param| %>
     <%= form_tag @route[:path], :method => @route[:verb], :class => 'well form-horizontal', :remote => true do %>
 
