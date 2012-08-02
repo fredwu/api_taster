@@ -49,7 +49,7 @@ module ApiTaster
         desc "Dummy user ID"
         get '/dummy_users/:id', :id => 1
         post '/dummy_users'
-        post '/dummy_users', { :hello => 'world' }
+        post '/dummy_users', { :hello => 'world' }, { :meta => 'data' }
         put '/dummy_users/:id', :id => 2
         delete '/dummy_users/:id', :id => 3
       end
@@ -87,10 +87,22 @@ module ApiTaster
       Route.comment_for(route).should == "Dummy user ID"
     end
 
-    it "don't describe a route" do
+    it "doesn't describe a route" do
       route = Route.find_by_verb_and_path(:post, '/dummy_users')
 
       Route.comment_for(route).should be_nil
+    end
+
+    it "meta data for a route" do
+      route = Route.find_by_verb_and_path(:post, '/dummy_users')
+
+      Route.metadata_for(route).should == { :meta => 'data' }
+    end
+
+    it "empty meta data for a route" do
+      route = Route.find_by_verb_and_path(:get, '/dummy_users')
+
+      Route.metadata_for(route).should == nil
     end
   end
 end

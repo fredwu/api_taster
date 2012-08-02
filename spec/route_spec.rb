@@ -75,38 +75,43 @@ module ApiTaster
       Route.find_by_verb_and_path(:delete, '/home').should == nil
     end
 
-    it "#params_for" do
-      Route.stub(:routes).and_return([{
-        :id   => 0,
-        :path => '/dummy/:dummy_id'
-      }, {
-        :id   => 999,
-        :path => 'a_non_existing_dummy',
-        :verb => 'get'
-      }])
-      Route.supplied_params[0] = [{ :dummy_id => 1, :hello => 'world' }]
-
-      Route.params_for(Route.find(999)).should have_key(:undefined)
-
-      2.times do
-        Route.params_for(Route.find(0)).should == [{
-          :url_params  => { :dummy_id => 1 },
-          :post_params => { :hello => 'world' }
-        }]
+    context "get data of a route" do
+      before do
+        Route.stub(:routes).and_return([{
+          :id   => 0,
+          :path => '/dummy/:dummy_id'
+        }, {
+          :id   => 999,
+          :path => 'a_non_existing_dummy',
+          :verb => 'get'
+        }])
+        Route.supplied_params[0] = [{ :dummy_id => 1, :hello => 'world' }]
       end
-    end
 
-    it "#comment_for" do
-      Route.stub(:routes).and_return([{
-        :id   => 42,
-        :path => '/dummy/:dummy_id'
-      }])
-      Route.supplied_params[42] = {}
+      it "#params_for" do
+        Route.params_for(Route.find(999)).should have_key(:undefined)
 
-      markdown_comment = "Heading\n=======\n * List item 1\n * List item 2"
-      Route.comments[42] = markdown_comment
+        2.times do
+          Route.params_for(Route.find(0)).should == [{
+            :url_params  => { :dummy_id => 1 },
+            :post_params => { :hello => 'world' }
+          }]
+        end
+      end
 
-      Route.comment_for(Route.find(42)).should eq(markdown_comment)
+      it "#comment_for" do
+        markdown_comment = "Heading\n=======\n * List item 1\n * List item 2"
+        Route.comments[0] = markdown_comment
+
+        Route.comment_for(Route.find(0)).should == markdown_comment
+      end
+
+      it "#metadata_for" do
+        metadata = { :hello => 'world' }
+        Route.metadata[0] = metadata
+
+        Route.metadata_for(Route.find(0)).should == metadata
+      end
     end
 
     it "#missing_definitions and #defined_definitions" do

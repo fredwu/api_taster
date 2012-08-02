@@ -6,14 +6,16 @@ module ApiTaster
     cattr_accessor :supplied_params
     cattr_accessor :obsolete_definitions
     cattr_accessor :comments
+    cattr_accessor :metadata
 
     class << self
 
       def map_routes
-        self.route_set             = Rails.application.routes
-        self.supplied_params       = {}
-        self.obsolete_definitions  = []
-        self.comments              = {}
+        self.route_set            = Rails.application.routes
+        self.supplied_params      = {}
+        self.obsolete_definitions = []
+        self.comments             = {}
+        self.metadata             = {}
 
         normalise_routes!
 
@@ -77,6 +79,12 @@ module ApiTaster
       def comment_for(route)
         unless undefined_route?(route)
           self.comments[route[:id].to_i]
+        end
+      end
+
+      def metadata_for(route)
+        unless undefined_route?(route)
+          self.metadata[route[:id].to_i]
         end
       end
 

@@ -88,6 +88,18 @@ desc 'Get a __list__ of users'
 get '/users'
 ```
 
+### Metadata for API Endpoints
+
+For each route definition, you may supply an optional third parameter (hash) as metadata:
+
+```ruby
+get '/users', {}, { :meta => 'data' }
+```
+
+The metadata option is useful for passing in arbitrary data for a route definition. For example, you could specify response expectations so that your test suite could tap into them.
+
+Metadata for every route definition are stored in `ApiTaster::Route.metadata`. Please read the source code to find out how to get metadata for a particular route.
+
 ### Missing Route Definitions Detection
 
 Instead of manually finding out which route definitions you need, API Taster provides a warning page that shows you all the missing definitions.
