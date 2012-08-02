@@ -34,6 +34,7 @@ In `routes.rb`, define parameters for each API endpoint after the normal routes 
 ```ruby
 if Rails.env.development?
   ApiTaster.routes do
+    desc 'Get a __list__ of users'
     get '/users'
 
     post '/users', {
@@ -76,6 +77,15 @@ ApiTaster.global_params = {
 ApiTaster.routes do
   # your route definitions
 end
+```
+
+### Commenting API Endpoints
+
+Before each route definitions, you may use `desc` to add some comments. Markdown is supported.
+
+```ruby
+desc 'Get a __list__ of users'
+get '/users'
 ```
 
 ### Missing Route Definitions Detection
