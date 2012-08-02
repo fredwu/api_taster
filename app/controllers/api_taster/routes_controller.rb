@@ -11,6 +11,7 @@ module ApiTaster
     def show
       @route  = Route.find(params[:id])
       @params = Route.params_for(@route)
+      @comment = Route.comment_for(params[:id])
     end
 
     def missing_definitions
