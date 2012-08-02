@@ -79,7 +79,6 @@ module ApiTaster
           self.comments[route[:id].to_i]
         end
       end
-      end
 
       def defined_definitions
         routes.reject { |route| undefined_route?(route) }
