@@ -10,10 +10,10 @@ module ApiTaster
     class << self
 
       def map_routes
-        self.route_set            = Rails.application.routes
-        self.supplied_params      = {}
-        self.obsolete_definitions = []
-        self.comments             = []
+        self.route_set             = Rails.application.routes
+        self.supplied_params       = {}
+        self.obsolete_definitions  = []
+        self.comments              = {}
 
         normalise_routes!
 
@@ -74,8 +74,11 @@ module ApiTaster
         supplied_params[route[:id]].collect { |input| split_input(input, route) }
       end
 
-      def comment_for(id)
-        self.comments[id.to_i]
+      def comment_for(route)
+        unless undefined_route?(route)
+          self.comments[route[:id].to_i]
+        end
+      end
       end
 
       def defined_definitions

@@ -21,11 +21,13 @@ module ApiTaster
     it "#show" do
       Route.stub(:find).and_return(Route.new)
       Route.stub(:params_for).and_return([])
+      Route.stub(:comment_for).and_return([])
 
       get :show, :id => 1, :use_route => :api_taster
 
       assigns(:route).should be_kind_of(Route)
       assigns(:params).should be_kind_of(Array)
+      assigns(:comment).should be_kind_of(Array)
     end
 
     it "#missing_definitions" do

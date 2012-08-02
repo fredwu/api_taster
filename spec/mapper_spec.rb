@@ -84,13 +84,13 @@ module ApiTaster
     it "describes a route" do
       route = Route.find_by_verb_and_path(:get, '/dummy_users/:id')
 
-      Route.comment_for(route[:id]).should == "Dummy user ID"
+      Route.comment_for(route).should == "Dummy user ID"
     end
 
     it "don't describe a route" do
       route = Route.find_by_verb_and_path(:post, '/dummy_users')
 
-      Route.comment_for(route[:id]).should be_nil
+      Route.comment_for(route).should be_nil
     end
   end
 end

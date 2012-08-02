@@ -14,6 +14,7 @@ ApiTaster.routes do
     :hello => 'world'
   }
 
+  desc 'Get a __list__ of users.'
   get '/users'
 
   post '/users', {

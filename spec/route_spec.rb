@@ -97,9 +97,16 @@ module ApiTaster
     end
 
     it "#comment_for" do
+      Route.stub(:routes).and_return([{
+        :id   => 42,
+        :path => '/dummy/:dummy_id'
+      }])
+      Route.supplied_params[42] = {}
+
       markdown_comment = "Heading\n=======\n * List item 1\n * List item 2"
       Route.comments[42] = markdown_comment
-      Route.comment_for(42).should eq(markdown_comment)
+
+      Route.comment_for(Route.find(42)).should eq(markdown_comment)
     end
 
     it "#missing_definitions and #defined_definitions" do
