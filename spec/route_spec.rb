@@ -22,7 +22,7 @@ module ApiTaster
       }
     end
 
-    before(:all) do
+    before do
       routes = ActionDispatch::Routing::RouteSet.new
       routes.draw do
         get 'home' => 'application#home', :as => :home
@@ -60,7 +60,6 @@ module ApiTaster
       Route.supplied_params[home_route[:id]] = {}
 
       Route.grouped_routes.has_key?('application').should == true
-      Route.grouped_routes.has_key?('users').should == false
       Route.grouped_routes.has_key?('comments').should == false
     end
 
