@@ -23,7 +23,11 @@ module ApiTaster
     end
 
     before(:all) do
-      Rails.application.routes.draw { resources :dummy_users }
+      Rails.application.routes.draw do
+        resources :dummy_users do
+          member { map_method :patch, :update }
+        end
+      end
     end
 
     context "#global_params" do
@@ -52,6 +56,7 @@ module ApiTaster
         post '/dummy_users', { :hello => 'world' }, { :meta => 'data' }
         put '/dummy_users/:id', :id => 2
         delete '/dummy_users/:id', :id => 3
+        patch '/dummy_users/:id', :id => 4
       end
 
       Route.map_routes
@@ -73,6 +78,12 @@ module ApiTaster
       route = Route.find_by_verb_and_path(:put, '/dummy_users/:id')
 
       Route.supplied_params[route[:id]].should == [{ :id => 2 }]
+    end
+
+    it "edits a user via PATCH" do
+      route = Route.find_by_verb_and_path(:patch, '/dummy_users/:id')
+
+      Route.supplied_params[route[:id]].should == [{ :id => 4 }]
     end
 
     it "deletes a user" do
