@@ -15,6 +15,10 @@ module ApiTaster
         map_method(:put, path, params, metadata)
       end
 
+      def patch(path, params = {}, metadata = {})
+        map_method(:patch, path, params, metadata)
+      end
+
       def delete(path, params = {}, metadata = {})
         map_method(:delete, path, params, metadata)
       end
