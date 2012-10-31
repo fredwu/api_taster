@@ -52,7 +52,7 @@ module ApiTaster
         :locals  => {
           :label      => "#{print_labels(parent_labels)}#{label}",
           :label_text => label,
-          :value      => value.to_s
+          :value      => value
         }
       )
     end
