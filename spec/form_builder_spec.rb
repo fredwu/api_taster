@@ -12,6 +12,7 @@ module ApiTaster
     let(:builder) do
       FormBuilder.new({
         :hello => 'world',
+        :content => :file,
         :user => {
           :name => 'Fred',
           :comment => {
@@ -41,6 +42,10 @@ module ApiTaster
     context "data types" do
       it "does strings" do
         builder.html.should match('value="world"')
+      end
+
+      it "does files" do
+        builder.html.should match('<input type="file" name="content" ></input>')
       end
 
       it "does numbers" do

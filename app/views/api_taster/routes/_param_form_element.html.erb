@@ -1,6 +1,10 @@
 <div class="control-group">
   <label class="control-label" for="<%= label %>"><%= defined?(label_text) ? label_text : label %></label>
   <div class="controls">
-    <input type="text" name="<%= label %>" value="<%= value %>"></input>
+    <% if value === :file %>
+        <input type="file" name="<%= label %>" ></input>
+    <% else %>
+        <input type="text" name="<%= label %>" value="<%= value.to_s %>"></input>
+    <% end %>
   </div>
 </div>
