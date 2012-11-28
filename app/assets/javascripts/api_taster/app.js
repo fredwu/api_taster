@@ -1,7 +1,5 @@
 var ApiTaster = {
 
-  formAction: '',
-
   disableSubmitButton: function() {
     $("#submit-api").attr("disabled", true);
   },
@@ -18,14 +16,6 @@ var ApiTaster = {
     $("fieldset[ref=url-params] input").prop("disabled", false);
   },
 
-  storeFormActionFor: function(form) {
-    ApiTaster.formAction = form.attr("action")
-  },
-
-  restoreFormActionFor: function(form) {
-    $(form).attr("action", ApiTaster.formAction);
-  },
-
   detectContentType: function(response) {
     var contentType = response.getResponseHeader("Content-Type");
     var detectedContentType = null
@@ -40,55 +30,57 @@ var ApiTaster = {
   fillInInfoTab: function($tab, xhr) {
     $tab.find('.status td.value').text(xhr.status + " " + xhr.statusText);
     $tab.find('.headers td.value').text(xhr.getAllResponseHeaders());
-    $tab.find('.time td.value').text((ApiTaster.endTime - ApiTaster.startTime) + " ms");
+
+    timeTaken = ApiTaster.lastRequest.endTime - ApiTaster.lastRequest.startTime
+    $tab.find('.time td.value').text(timeTaken + " ms");
+  },
+
+  getSubmitUrl: function($form) {
+    var baseUrl = $form.attr('action');
+    var matches = baseUrl.match(/\:[^\/]+/g)
+
+    for(var a = 0; a < matches.length; a++) {
+      var match = matches[a];
+      var str = match.substr(1);
+
+      var $input = $form.find(
+        'input[name="' + str + '"],input[name="[api_taster_url_params]' + str + '"]'
+      );
+
+      if($input.length > 0) {
+        baseUrl = baseUrl.replace(match, $input.val());
+      }
+    }
+    return baseUrl;
   }
 
 };
 
 $.fn.extend({
 
-  replaceUrlParams: function(params) {
-    var form = this;
-
-    ApiTaster.storeFormActionFor(form);
-
-    var formAction = form.attr("action");
-
-    $.each(params, function(i, param) {
-      var matches = param["name"].match(/\[api_taster_url_params\](.*)/)
-      if (matches) {
-        var paramKey   = matches[1];
-        var paramValue = param["value"];
-        var regex      = new RegExp(":" + paramKey);
-
-        formAction = formAction.replace(regex, paramValue);
-      }
-    });
-
-    form.attr("action", formAction);
-  },
-
   enableNavTabsFor: function(contentElement) {
-    var container = this;
+    var $container = $(this);
 
-    $("ul.nav-tabs a", container).click(function(e) {
-      e.preventDefault();
+    $container.find("ul.nav-tabs a").click(function() {
+      $link = $(this);
+      $li =  $link.parent();
 
-      $(this).parent().siblings().removeClass("active");
-      $(this).parent().addClass("active");
+      $li.addClass("active").siblings().removeClass("active");
 
-      $(contentElement, container).hide();
-      $(contentElement + "[ref=" + $(this).attr("id") + "]", container).show();
+      $container.find(contentElement).hide();
+      $container.find(contentElement + "[ref=" + $link.attr("id") + "]").show();
+      return false;
     });
   },
 
   showNavTab: function(name) {
-    $("ul.nav-tabs li", this).removeClass("active");
-    $("ul.nav-tabs li a#response-" + name, this).parent().show().addClass("active");
+    $response = $(this);
+    $response.find("ul.nav-tabs li").removeClass("active");
+    $response.find("ul.nav-tabs li a#response-" + name).parent().show().addClass("active");
 
-    $("pre", this).hide();
+    $response.find("pre").hide();
 
-    return $("pre[ref=response-" + name + "]", this).show();
+    return $response.find("pre[ref=response-" + name + "]").show();
   },
 
   displayOnlySelectedParamsFieldset: function() {
@@ -110,58 +102,54 @@ jQuery(function($) {
 
       $("#show-api-div form").enableNavTabsFor("fieldset");
       $("#show-api-div form").displayOnlySelectedParamsFieldset();
+
+      $("#show-api-div form").submit(onSubmit);
+      $("#show-api-response-div").enableNavTabsFor("pre");
     });
   });
 
-  $("#show-api-div").on("click", "#submit-api", function() {
-    $(this).parents("form").submit(function() {
-      ApiTaster.disableSubmitButton();
+  function onSubmit(e) {
+    $form = $(e.target);
+    ApiTaster.disableSubmitButton();
+    ApiTaster.disableUrlParams();
 
-      $(this).unbind("submit").ajaxSubmit({
-        beforeSubmit: function(arr, $form, options) {
-          $form.replaceUrlParams(arr);
-          ApiTaster.disableUrlParams();
-          return false;
-        }
-      });
-    });
+    window.ajax = $.ajax({
+      url: ApiTaster.getSubmitUrl($form),
+      type: $form.attr('method'),
+      data: $form.serialize(),
+      dataType: 'xml'
+    }).complete(onComplete);
 
-    // These callbacks are a few ms more accurate than click/submit above/below
-    $("form").bind("ajax:beforeSend", function() {
-    	ApiTaster.startTime = Date.now();
-    });
-    $("form").bind("ajax:success", function() {
-    	ApiTaster.endTime = Date.now();
-    });
+    ApiTaster.lastRequest = {};
+    ApiTaster.lastRequest.startTime = Date.now();
 
-    $("form").bind("ajax:complete", function(e, xhr, status) {
-    	ApiTaster.enableSubmitButton();
-      ApiTaster.enableUrlParams();
-      ApiTaster.restoreFormActionFor(this);
+    return false;
+  }
 
-      if ($("#show-api-response-div:visible").length == 0) {
-        $("#show-api-response-div").slideDown(100);
-      }
+  function onComplete(xhr, status) {
+    ApiTaster.lastRequest.endTime = Date.now();
+    ApiTaster.enableSubmitButton();
+    ApiTaster.enableUrlParams();
 
-      ApiTaster.fillInInfoTab(
-        $("#show-api-response-div").showNavTab("info"),
-        xhr
-      );
+    if ($("#show-api-response-div:visible").length == 0) {
+      $("#show-api-response-div").slideDown(100);
+    }
 
-      switch (ApiTaster.detectContentType(xhr)) {
-        case "json":
-          $("#show-api-response-div").showNavTab("json").text(
-            JSON.stringify(JSON.parse(xhr.responseText), null, 2)
-          );
-          break;
-      }
+    ApiTaster.fillInInfoTab(
+      $("#show-api-response-div").showNavTab("info"),
+      xhr
+    );
 
-      $("#show-api-response-div pre[ref=response-raw]").text(xhr.responseText);
+    switch (ApiTaster.detectContentType(xhr)) {
+      case "json":
+        $("#show-api-response-div").showNavTab("json").text(
+          JSON.stringify(JSON.parse(xhr.responseText), null, 2)
+        );
+        break;
+    }
 
-      prettyPrint();
-    });
+    $("#show-api-response-div pre[ref=response-raw]").text(xhr.responseText);
 
-    $("#show-api-response-div").enableNavTabsFor("pre");
-  });
+    prettyPrint();
+  }
 });
-
