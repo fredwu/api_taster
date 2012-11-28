@@ -1,148 +1,155 @@
 var ApiTaster = {
 
-	formAction: '',
+  disableSubmitButton: function() {
+    $("#submit-api").attr("disabled", true);
+  },
 
-	disableSubmitButton: function() {
-		$("#submit-api").attr("disabled", true);
-	},
+  enableSubmitButton: function() {
+    $("#submit-api").attr("disabled", false);
+  },
 
-	enableSubmitButton: function() {
-		$("#submit-api").attr("disabled", false);
-	},
+  disableUrlParams: function() {
+    $("fieldset[ref=url-params] input").prop("disabled", true);
+  },
 
-	disableUrlParams: function() {
-		$("fieldset[ref=url-params] input").prop("disabled", true);
-	},
+  enableUrlParams: function() {
+    $("fieldset[ref=url-params] input").prop("disabled", false);
+  },
 
-	enableUrlParams: function() {
-		$("fieldset[ref=url-params] input").prop("disabled", false);
-	},
+  detectContentType: function(response) {
+    var contentType = response.getResponseHeader("Content-Type");
+    var detectedContentType = null
 
-	storeFormActionFor: function(form) {
-		ApiTaster.formAction = form.attr("action")
-	},
+    if (contentType.match(/application\/json/)) {
+       detectedContentType = 'json';
+    }
 
-	restoreFormActionFor: function(form) {
-		$(form).attr("action", ApiTaster.formAction);
-	},
+    return detectedContentType;
+  },
 
-	detectContentType: function(response) {
-		var contentType = response.getResponseHeader("Content-Type");
-		var detectedContentType = null
+  fillInInfoTab: function($tab, xhr) {
+    $tab.find('.status td.value').text(xhr.status + " " + xhr.statusText);
+    $tab.find('.headers td.value').text(xhr.getAllResponseHeaders());
 
-		if (contentType.match(/application\/json/)) {
-			 detectedContentType = 'json';
-		}
+    timeTaken = ApiTaster.lastRequest.endTime - ApiTaster.lastRequest.startTime
+    $tab.find('.time td.value').text(timeTaken + " ms");
+  },
 
-		return detectedContentType;
-	}
+  getSubmitUrl: function($form) {
+    var baseUrl = $form.attr('action');
+    var matches = baseUrl.match(/\:[^\/]+/g)
+
+    for(var a = 0; a < matches.length; a++) {
+      var match = matches[a];
+      var str = match.substr(1);
+
+      var $input = $form.find(
+        'input[name="' + str + '"],input[name="[api_taster_url_params]' + str + '"]'
+      );
+
+      if($input.length > 0) {
+        baseUrl = baseUrl.replace(match, $input.val());
+      }
+    }
+    return baseUrl;
+  }
 
 };
 
 $.fn.extend({
 
-	replaceUrlParams: function(params) {
-		var form = this;
+  enableNavTabsFor: function(contentElement) {
+    var $container = $(this);
 
-		ApiTaster.storeFormActionFor(form);
+    $container.find("ul.nav-tabs a").click(function() {
+      $link = $(this);
+      $li =  $link.parent();
 
-		var formAction = form.attr("action");
+      $li.addClass("active").siblings().removeClass("active");
 
-		$.each(params, function(i, param) {
-			var matches = param["name"].match(/\[api_taster_url_params\](.*)/)
-			if (matches) {
-				var paramKey   = matches[1];
-				var paramValue = param["value"];
-				var regex      = new RegExp(":" + paramKey);
+      $container.find(contentElement).hide();
+      $container.find(contentElement + "[ref=" + $link.attr("id") + "]").show();
+      return false;
+    });
+  },
 
-				formAction = formAction.replace(regex, paramValue);
-			}
-		});
+  showNavTab: function(name) {
+    $response = $(this);
+    $response.find("ul.nav-tabs li").removeClass("active");
+    $response.find("ul.nav-tabs li a#response-" + name).parent().show().addClass("active");
 
-		form.attr("action", formAction);
-	},
+    $response.find("pre").hide();
 
-	enableNavTabsFor: function(contentElement) {
-		var container = this;
+    return $response.find("pre[ref=response-" + name + "]").show();
+  },
 
-		$("ul.nav-tabs a", container).click(function(e) {
-			e.preventDefault();
-
-			$(this).parent().siblings().removeClass("active");
-			$(this).parent().addClass("active");
-
-			$(contentElement, container).hide();
-			$(contentElement + "[ref=" + $(this).attr("id") + "]", container).show();
-		});
-	},
-
-	showNavTab: function(name) {
-		$("ul.nav-tabs li", this).removeClass("active");
-		$("ul.nav-tabs li a#response-" + name, this).parent().show().addClass("active");
-
-		$("pre", this).hide();
-
-		return $("pre[ref=response-" + name + "]", this).show();
-	},
-
-	displayOnlySelectedParamsFieldset: function() {
-		$("fieldset", this).hide();
-		$("fieldset[ref=" + $("ul.nav-tabs li.active a").attr("id") + "]", this).show();
-	}
+  displayOnlySelectedParamsFieldset: function() {
+    $("fieldset", this).hide();
+    $("fieldset[ref=" + $("ul.nav-tabs li.active a").attr("id") + "]", this).show();
+  }
 
 });
 
 jQuery(function($) {
-	$("#list-api-div a").click(function(e) {
-		e.preventDefault();
+  $("#list-api-div a").click(function(e) {
+    e.preventDefault();
 
-		$(this).parent().siblings().removeClass("active");
-		$(this).parent().addClass("active");
+    $(this).parent().siblings().removeClass("active");
+    $(this).parent().addClass("active");
 
-		$("#show-api-div .div-container").load(this.href, function() {
-			prettyPrint();
+    $("#show-api-div .div-container").load(this.href, function() {
+      prettyPrint();
 
-			$("#show-api-div form").enableNavTabsFor("fieldset");
-			$("#show-api-div form").displayOnlySelectedParamsFieldset();
-		});
-	});
+      $("#show-api-div form").enableNavTabsFor("fieldset");
+      $("#show-api-div form").displayOnlySelectedParamsFieldset();
 
-	$("#show-api-div").on("click", "#submit-api", function() {
-		$(this).parents("form").submit(function() {
-			ApiTaster.disableSubmitButton();
+      $("#show-api-div form").submit(onSubmit);
+      $("#show-api-response-div").enableNavTabsFor("pre");
+    });
+  });
 
-			$(this).unbind("submit").ajaxSubmit({
-				beforeSubmit: function(arr, $form, options) {
-					$form.replaceUrlParams(arr);
-					ApiTaster.disableUrlParams();
-					return false;
-				}
-			});
-		});
+  function onSubmit(e) {
+    $form = $(e.target);
+    ApiTaster.disableSubmitButton();
+    ApiTaster.disableUrlParams();
 
-		$("form").bind("ajax:complete", function(e, xhr, status) {
-			ApiTaster.enableSubmitButton();
-			ApiTaster.enableUrlParams();
-			ApiTaster.restoreFormActionFor(this);
+    window.ajax = $.ajax({
+      url: ApiTaster.getSubmitUrl($form),
+      type: $form.attr('method'),
+      data: $form.serialize(),
+      dataType: 'xml'
+    }).complete(onComplete);
 
-			if ($("#show-api-response-div:visible").length == 0) {
-				$("#show-api-response-div").slideDown(100);
-			}
+    ApiTaster.lastRequest = {};
+    ApiTaster.lastRequest.startTime = Date.now();
 
-			switch (ApiTaster.detectContentType(xhr)) {
-				case "json":
-					$("#show-api-response-div").showNavTab("json").text(
-						JSON.stringify(JSON.parse(xhr.responseText), null, 2)
-					);
-					break;
-			}
+    return false;
+  }
 
-			$("#show-api-response-div pre[ref=response-raw]").text(xhr.responseText);
+  function onComplete(xhr, status) {
+    ApiTaster.lastRequest.endTime = Date.now();
+    ApiTaster.enableSubmitButton();
+    ApiTaster.enableUrlParams();
 
-			prettyPrint();
-		});
+    if ($("#show-api-response-div:visible").length == 0) {
+      $("#show-api-response-div").slideDown(100);
+    }
 
-		$("#show-api-response-div").enableNavTabsFor("pre");
-	});
+    ApiTaster.fillInInfoTab(
+      $("#show-api-response-div").showNavTab("info"),
+      xhr
+    );
+
+    switch (ApiTaster.detectContentType(xhr)) {
+      case "json":
+        $("#show-api-response-div").showNavTab("json").text(
+          JSON.stringify(JSON.parse(xhr.responseText), null, 2)
+        );
+        break;
+    }
+
+    $("#show-api-response-div pre[ref=response-raw]").text(xhr.responseText);
+
+    prettyPrint();
+  }
 });
-
