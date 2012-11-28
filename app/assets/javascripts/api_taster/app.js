@@ -39,18 +39,21 @@ var ApiTaster = {
     var baseUrl = $form.attr('action');
     var matches = baseUrl.match(/\:[^\/]+/g)
 
-    for(var a = 0; a < matches.length; a++) {
-      var match = matches[a];
-      var str = match.substr(1);
+    if (matches) {
+      for(var a = 0; a < matches.length; a++) {
+        var match = matches[a];
+        var str = match.substr(1);
 
-      var $input = $form.find(
-        'input[name="' + str + '"],input[name="[api_taster_url_params]' + str + '"]'
-      );
+        var $input = $form.find(
+          'input[name="' + str + '"],input[name="[api_taster_url_params]' + str + '"]'
+        );
 
-      if($input.length > 0) {
-        baseUrl = baseUrl.replace(match, $input.val());
+        if ($input.length > 0) {
+          baseUrl = baseUrl.replace(match, $input.val());
+        }
       }
     }
+
     return baseUrl;
   }
 
