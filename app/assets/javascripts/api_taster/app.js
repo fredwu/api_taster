@@ -35,6 +35,12 @@ var ApiTaster = {
     }
 
     return detectedContentType;
+  },
+
+  fillInInfoTab: function($tab, xhr) {
+    $tab.find('.status td.value').text(xhr.status + " " + xhr.statusText);
+    $tab.find('.headers td.value').text(xhr.getAllResponseHeaders());
+    $tab.find('.time td.value').text((ApiTaster.endTime - ApiTaster.startTime) + " ms");
   }
 
 };
@@ -120,14 +126,27 @@ jQuery(function($) {
       });
     });
 
+    // These callbacks are a few ms more accurate than click/submit above/below
+    $("form").bind("ajax:beforeSend", function() {
+    	ApiTaster.startTime = Date.now();
+    });
+    $("form").bind("ajax:success", function() {
+    	ApiTaster.endTime = Date.now();
+    });
+
     $("form").bind("ajax:complete", function(e, xhr, status) {
-      ApiTaster.enableSubmitButton();
+    	ApiTaster.enableSubmitButton();
       ApiTaster.enableUrlParams();
       ApiTaster.restoreFormActionFor(this);
 
       if ($("#show-api-response-div:visible").length == 0) {
         $("#show-api-response-div").slideDown(100);
       }
+
+      ApiTaster.fillInInfoTab(
+        $("#show-api-response-div").showNavTab("info"),
+        xhr
+      );
 
       switch (ApiTaster.detectContentType(xhr)) {
         case "json":

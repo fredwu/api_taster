@@ -59,9 +59,26 @@
 <div id="show-api-response-div" class="well hidden">
   <ul class="nav nav-tabs">
     <li class="nav-label">Response</li>
+    <li class="hidden"><a href="#" id="response-info">Info</a></li>
     <li class="hidden"><a href="#" id="response-json">JSON</a></li>
     <li class="active"><a href="#" id="response-raw">Raw</a></li>
   </ul>
+  <pre ref="response-info">
+    <table>
+      <tr class="status">
+        <td class="name">HTTP_status:</td>
+        <td class="value str"></td>
+      </tr>
+      <tr class="time">
+        <td class="name">Time:</td>
+        <td class="value str"></td>
+      </tr>
+      <tr class="headers">
+        <td class="name">Headers:</td>
+        <td class="value str"></td>
+      </tr>
+    </table>
+  </pre>
   <pre class="prettyprint nowrap hidden" ref="response-json"></pre>
   <pre class="prettyprint" ref="response-raw"></pre>
 </div>

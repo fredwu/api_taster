@@ -85,9 +85,26 @@ legend {
 }
 
 #show-api-response-div {
+  pre {
+    color: #fff;
+  }
   pre.nowrap {
     overflow-x: auto;
     white-space: pre;
     word-wrap: normal;
+  }
+  pre[ref=response-info] {
+    background: #000;
+  }
+
+  table {
+    td {
+      padding: 0 1em 0 0;
+      vertical-align: top;
+
+      &.name {
+        text-align: right;
+      }
+    }
   }
 }
