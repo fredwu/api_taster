@@ -35,7 +35,6 @@ module ApiTaster
         end
 
         route_set.routes.each do |route|
-          next if route.app.is_a?(ActionDispatch::Routing::Mapper::Constraints)
           next if route.app.is_a?(Sprockets::Environment)
           next if route.app == ApiTaster::Engine
 
