@@ -42,7 +42,7 @@ module ApiTaster
           if (rack_app = discover_rack_app(route.app)) && rack_app.respond_to?(:routes)
             rack_app.routes.routes.each do |rack_route|
               self.routes << normalise_route(rack_route, route.path.spec)
-            end
+            end if rack_app.routes.respond_to?(:routes)
           end
 
           next if route.verb.source.empty?
