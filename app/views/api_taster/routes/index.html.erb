@@ -9,7 +9,7 @@
               :text => 'Missing Definitions Detected',
               :path => missing_definitions_routes_path %>
           <% end %>
-          <% if obsolete_defitions? %>
+          <% if obsolete_definitions? %>
             <%= render 'information_warning_li',
               :text => 'Obsolete Definitions Detected',
               :path => obsolete_definitions_routes_path %>
@@ -36,9 +36,7 @@
   <div id="show-api-div" class="span7">
     <div class="div-container">
       <div class="alert alert-block alert-info">
-        <h3>
-          To get started, click on any link at left, enter search criteria in the fields on the right and Submit!
-        </h3>
+        <h3><%= ApiTaster.config.call_to_action %></h3>
       </div>
     </div>
   </div>

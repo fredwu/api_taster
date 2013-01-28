@@ -33,6 +33,9 @@ module ApiTaster
 
   configure do |config|
     config.title = 'API Taster'
+    config.call_to_action = 'Select an API endpoint on the left to get started. :)'
+    config.app_title = Rails.application.class.name
+    config.app_url = '/'
     config.include_missing_definitions = true
     config.include_obsolete_definitions = true
   end
