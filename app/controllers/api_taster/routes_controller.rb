@@ -1,11 +1,10 @@
 module ApiTaster
   class RoutesController < ApiTaster::ApplicationController
     before_filter :map_routes
+    helper_method :missing_definitions?, :obsolete_definitions?
 
     def index
       @routes = Route.grouped_routes
-      @has_missing_definitions  = Route.missing_definitions.present?
-      @has_obsolete_definitions = Route.obsolete_definitions.present?
     end
 
     def show
@@ -26,6 +25,14 @@ module ApiTaster
 
     def map_routes
       Route.map_routes
+    end
+
+    def missing_definitions?
+      Route.missing_definitions.present? && ApiTaster.config.include_missing_definitions
+    end
+
+    def obsolete_definitions?
+      Route.obsolete_definitions.present? && ApiTaster.config.include_obsolete_definitions
     end
   end
 end
