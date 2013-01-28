@@ -18,6 +18,9 @@ module ApiTaster
     include ActiveSupport::Configurable
 
     config_accessor :title
+    config_accessor :call_to_action
+    config_accessor :app_title
+    config_accessor :app_url
     config_accessor :include_missing_definitions
     config_accessor :include_obsolete_definitions
 
@@ -34,7 +37,7 @@ module ApiTaster
   configure do |config|
     config.title = 'API Taster'
     config.call_to_action = 'Select an API endpoint on the left to get started. :)'
-    config.app_title = Rails.application.class.name
+    config.app_title = 'Application'
     config.app_url = '/'
     config.include_missing_definitions = true
     config.include_obsolete_definitions = true
