@@ -1,3 +1,5 @@
+require File.expand_path('../parseable_route', __FILE__)
+
 module ApiTaster
   class Route
     cattr_accessor :route_set
@@ -34,20 +36,12 @@ module ApiTaster
           raise ApiTaster::Exception.new('Route definitions are missing, have you defined ApiTaster.routes?')
         end
 
-        route_set.routes.each do |route|
-          next if route.app.is_a?(ActionDispatch::Routing::Mapper::Constraints)
-          next if route.app.is_a?(Sprockets::Environment)
-          next if route.app == ApiTaster::Engine
-
-          if (rack_app = discover_rack_app(route.app)) && rack_app.respond_to?(:routes)
-            rack_app.routes.routes.each do |rack_route|
-              self.routes << normalise_route(rack_route, route.path.spec)
-            end if rack_app.routes.respond_to?(:routes)
+        route_set.routes.map { |r| ParseableRoute.new(r) }.each do |route|
+          route.rack_routes.map { |rr| ParseableRoute.new(rr) }.each do |rack_route|
+            self.routes << normalise_route(rack_route, route.sanitized_path)
           end
 
-          next if route.verb.source.empty?
-
-          self.routes << normalise_route(route)
+          self.routes << normalise_route(route) if route.normalisable?
         end
 
         self.routes.flatten!
@@ -103,22 +97,13 @@ module ApiTaster
         r.is_a?(Hash) && r.has_key?(:undefined)
       end
 
-      def discover_rack_app(app)
-        class_name = app.class.name.to_s
-        if class_name == "ActionDispatch::Routing::Mapper::Constraints"
-          discover_rack_app(app.app)
-        elsif class_name !~ /^ActionDispatch::Routing/
-          app
-        end
-      end
-
       def normalise_route(route, path_prefix = nil)
-        route.verb.source.split('|').map do |verb|
+        route.verbs.map do |verb|
           {
             :id   => @_route_counter+=1,
             :name => route.name,
-            :verb => verb.gsub(/[$^]/, ''),
-            :path => path_prefix.to_s + route.path.spec.to_s.sub('(.:format)', ''),
+            :verb => verb,
+            :path => path_prefix.to_s + route.sanitized_path,
             :reqs => route.requirements
           }
         end

@@ -1,6 +1,6 @@
 class ParseableRoute
 
-  delegate :name, :path, :requirements, :to => :route
+  delegate :name, :requirements, :to => :route
 
   def initialize(route)
     @route = route
@@ -24,11 +24,20 @@ class ParseableRoute
 
   def verbs
     case @route.verb
+    when Regexp
+      @route.verb.source.split('|').map{|v| v.gsub(/[$^]/, '')}
     when String
       @route.verb.split('|')
-    when Regexp
-      @route.verb.source.split('|')
     end
+  end
+
+  def sanitized_path
+    path_string = if @route.path.respond_to?(:spec)
+      @route.path.spec.to_s
+    else
+      @route.path.to_s
+    end
+    path_string.gsub('(.:format)', '')
   end
 
   def self.discover_rack_app(app)
@@ -45,7 +54,5 @@ class ParseableRoute
   def route
     @route
   end
-
-
 
 end
