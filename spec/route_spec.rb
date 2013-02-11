@@ -127,19 +127,5 @@ module ApiTaster
       Route.missing_definitions.first[:path].should == '/awesome_route'
       Route.defined_definitions.should == Route.routes - Route.missing_definitions
     end
-
-    context "private methods" do
-      it "#discover_rack_app" do
-        klass = Class.new
-        klass.stub_chain(:class, :name).and_return(ActionDispatch::Routing::Mapper::Constraints)
-        klass.stub(:app).and_return('klass')
-
-        Route.send(:discover_rack_app, klass).should == 'klass'
-      end
-
-      it "#discover_rack_app" do
-        Route.send(:discover_rack_app, ApiTaster::Engine).should == ApiTaster::Engine
-      end
-    end
   end
 end
