@@ -10,7 +10,7 @@ describe ParseableRoute do
       @name = options[:name] || 'mock_route'
       @verb = options[:verb] || 'GET|POST'
       @path = options[:path] || '/users(.:format)'
-      @requirements = options[:requirements] || {action: 'index', controller: 'users'}
+      @requirements = options[:requirements] || {:action => 'index', :controller => 'users'}
       @app = options[:app] || ActionDispatch::Routing::RouteSet.new
     end
   end
