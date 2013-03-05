@@ -10,7 +10,7 @@ module ApiTaster
 
     class << self
 
-      def map_routes
+      def map_routes(path = "#{Rails.root}/app/api_tasters")
         self.route_set            = Rails.application.routes
         self.supplied_params      = {}
         self.obsolete_definitions = []
@@ -20,7 +20,8 @@ module ApiTaster
         normalise_routes!
 
         begin
-          Mapper.instance_eval(&self.mappings.call)
+          ApiTaster::RouteCollector.collect!(path)
+          Mapper.instance_eval(&self.mappings)
         rescue
           Route.mappings = {}
         end
