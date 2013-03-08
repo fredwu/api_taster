@@ -119,8 +119,7 @@ jQuery(function($) {
     window.ajax = $.ajax({
       url: ApiTaster.getSubmitUrl($form),
       type: $form.attr('method'),
-      data: $form.serialize(),
-      dataType: 'xml'
+      data: $form.serialize()
     }).complete(onComplete);
 
     ApiTaster.lastRequest = {};
