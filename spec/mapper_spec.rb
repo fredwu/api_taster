@@ -2,19 +2,30 @@ require 'spec_helper'
 
 module ApiTaster
   describe Mapper do
+    context "#global_params" do
+      before(:all) do
+        ApiTaster.global_params = { :foo => 'bar' }
+
+        Route.map_routes "#{Rails.root}/app/api_tasters/global_params"
+      end
+
+      it "merges params" do
+        route = Route.find_by_verb_and_path(:get, '/dummy_users/:id')
+
+        Route.supplied_params[route[:id]].should == [{ :foo => 'bar', :id => 1 }]
+      end
+    end
+
     context "non-existing routes" do
       before(:all) do
+        ApiTaster.global_params = {}
         routes = ActionDispatch::Routing::RouteSet.new
         routes.draw do
           get '/awesome_route' => 'awesome#route'
         end
 
-        ApiTaster.routes do
-          get '/dummy_route'
-        end
-
         Route.route_set = routes
-        Route.map_routes
+        Route.map_routes "#{Rails.root}/app/api_tasters/mapper"
       end
 
       it "records obsolete definitions" do
@@ -28,38 +39,8 @@ module ApiTaster
           member { map_method :patch, :update }
         end
       end
-    end
 
-    context "#global_params" do
-      before(:all) do
-        ApiTaster.global_params = { :foo => 'bar' }
-
-        ApiTaster.routes do
-          get '/dummy_users/:id', :id => 1
-        end
-
-        Route.map_routes
-      end
-
-      it "merges params" do
-        route = Route.find_by_verb_and_path(:get, '/dummy_users/:id')
-
-        Route.supplied_params[route[:id]].should == [{ :foo => 'bar', :id => 1 }]
-      end
-    end
-
-    before(:all) do
-      ApiTaster.routes do
-        desc "Dummy user ID"
-        get '/dummy_users/:id', :id => 1
-        post '/dummy_users'
-        post '/dummy_users', { :hello => 'world' }, { :meta => 'data' }
-        put '/dummy_users/:id', :id => 2
-        delete '/dummy_users/:id', :id => 3
-        patch '/dummy_users/:id', :id => 4
-      end
-
-      Route.map_routes
+      Route.map_routes "#{Rails.root}/app/api_tasters/mapper"
     end
 
     it "gets users" do
