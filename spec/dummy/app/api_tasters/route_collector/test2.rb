@@ -1,3 +1,3 @@
 ApiTaster.routes do
-  get '/dummy_users/:id', :id => 1
+  get '/dummy_users/:id', :id => 42
 end

@@ -39,9 +39,7 @@ module ApiTaster
           member { map_method :patch, :update }
         end
       end
-    end
 
-    before(:all) do
       Route.map_routes "#{Rails.root}/app/api_tasters/mapper"
     end
 

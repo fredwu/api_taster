@@ -9,7 +9,6 @@ module ApiTaster
     cattr_accessor :metadata
 
     class << self
-
       def map_routes(path = "#{Rails.root}/app/api_tasters")
         self.route_set            = Rails.application.routes
         self.supplied_params      = {}
@@ -20,7 +19,7 @@ module ApiTaster
         normalise_routes!
 
         begin
-          ApiTaster::RouteCollector.collect!(path)
+          ApiTaster::RouteCollector.collect(path)
           Mapper.instance_eval(&self.mappings)
         rescue
           Route.mappings = {}
