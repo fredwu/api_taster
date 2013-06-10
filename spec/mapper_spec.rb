@@ -5,8 +5,8 @@ module ApiTaster
     context "#global_params" do
       before(:all) do
         ApiTaster.global_params = { :foo => 'bar' }
-
-        Route.map_routes "#{Rails.root}/app/api_tasters/global_params"
+        Route.path = "#{Rails.root}/app/api_tasters/global_params"
+        Route.map_routes
       end
 
       it "merges params" do
@@ -25,7 +25,8 @@ module ApiTaster
         end
 
         Route.route_set = routes
-        Route.map_routes "#{Rails.root}/app/api_tasters/mapper"
+        Route.path = "#{Rails.root}/app/api_tasters/mapper"
+        Route.map_routes
       end
 
       it "records obsolete definitions" do
@@ -40,7 +41,8 @@ module ApiTaster
         end
       end
 
-      Route.map_routes "#{Rails.root}/app/api_tasters/mapper"
+      Route.path = "#{Rails.root}/app/api_tasters/mapper"
+      Route.map_routes
     end
 
     it "gets users" do
