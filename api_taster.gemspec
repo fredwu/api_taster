@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files      = `git ls-files`.split($\)
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency 'rails', '>= 3.1.0'
+  s.add_dependency 'rails', '~> 3.2.13'
   s.add_dependency 'jquery-rails'
   s.add_dependency 'sass-rails'
   s.add_dependency 'bootstrap-sass', '~> 2.1'
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'rspec-rails', '~> 2.13.2'
   s.add_development_dependency 'pry'
-  s.add_development_dependency 'thin'
+  s.add_development_dependency 'thin', '~> 1.5.1'
 end
