@@ -38,10 +38,12 @@ module ApiTaster
           next if route.app.is_a?(Sprockets::Environment)
           next if route.app == ApiTaster::Engine
 
-          if (rack_app = discover_rack_app(route.app)) && rack_app.respond_to?(:routes)
+          rack_app = discover_rack_app(route.app)
+
+          if rack_app && rack_app.respond_to?(:routes) && rack_app.routes.respond_to?(:routes)
             rack_app.routes.routes.each do |rack_route|
               self.routes << normalise_route(rack_route, route.path.spec)
-            end if rack_app.routes.respond_to?(:routes)
+            end
           end
 
           next if route.verb.source.empty?

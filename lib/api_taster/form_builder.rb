@@ -26,15 +26,15 @@ module ApiTaster
 
         new_parent_labels = parent_labels.clone << label
 
-        if value.is_a?(Hash)
+        case value
+        when Hash
           add_legend_to_buffer(parent_labels, label)
-
           add_to_buffer(value, new_parent_labels)
-        elsif value.is_a?(Array)
+        when Array
           value.each do |v|
-            if v.is_a?(Hash)
+            case v
+            when Hash
               add_legend_to_buffer(parent_labels, label)
-
               add_to_buffer(v, parent_labels.clone << "#{label}[]")
             else
               add_element_to_buffer(parent_labels, "#{label}[]", v)
