@@ -6,7 +6,7 @@ module ApiTaster
       Rails.application.routes.draw do
         resources :dummy_users
       end
-      Route.map_routes "#{Rails.root}/app/api_tasters/route_collector"
+      Route.map_routes "#{Rails.root}/lib/api_tasters/route_collector"
     end
 
     it "gets users" do
