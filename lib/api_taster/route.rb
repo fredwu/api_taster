@@ -37,6 +37,7 @@ module ApiTaster
         route_set.routes.each do |route|
           next if route.app.is_a?(Sprockets::Environment)
           next if route.app == ApiTaster::Engine
+          next if route.defaults[:controller].to_s.starts_with?('rails/')
 
           rack_app = discover_rack_app(route.app)
 
