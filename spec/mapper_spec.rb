@@ -36,7 +36,7 @@ module ApiTaster
     before(:all) do
       Rails.application.routes.draw do
         resources :dummy_users do
-          member { map_method :patch, :update }
+          member { map_method :patch, [:update] }
         end
       end
 
