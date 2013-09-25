@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 end
 ```
 
-In `routes.rb`, define parameters for each API endpoint after the normal routes definition block. For example:
+In `lib/api_tasters/routes.rb`, define parameters for each API endpoint after the normal routes definition block. For example:
 
 ```ruby
 if Rails.env.development?
@@ -58,6 +58,11 @@ if Rails.env.development?
     }
   end
 end
+```
+
+You can change the default `lib/api_tasters/routes.rb` path by creating `config/initializers/api_taster.rb` with the content below:
+```ruby
+ApiTaster.route_path = Rails.root.to_s + "/app/api_tasters" # just an example
 ```
 
 ### Share Params with Test Factories
