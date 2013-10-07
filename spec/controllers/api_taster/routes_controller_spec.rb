@@ -41,5 +41,25 @@ module ApiTaster
 
       assigns(:obsolete_definitions).should be_kind_of(Array)
     end
+
+    context 'layout' do
+      context 'when request is not XHR' do
+        it 'renders application layout' do
+          get :index, :use_route => :api_taster
+
+          response.should render_template('api_taster/application')
+        end
+      end
+
+      context 'when request is XHR' do
+        before { request.stub(:xhr?) { true } }
+
+        it 'does not render layout' do
+          get :index, :use_route => :api_taster
+
+          response.should_not render_template('api_taster/application')
+        end
+      end
+    end
   end
 end
