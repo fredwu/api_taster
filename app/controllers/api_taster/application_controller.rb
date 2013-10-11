@@ -1,6 +1,6 @@
 module ApiTaster
   class ApplicationController < ActionController::Base
-    layout proc { |controller| controller.request.xhr? ? nil : 'api_taster/application' }
+    layout proc { |controller| controller.request.xhr? ? false : 'api_taster/application' }
 
     before_filter :reload_routes
 

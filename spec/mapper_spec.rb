@@ -36,7 +36,11 @@ module ApiTaster
     before(:all) do
       Rails.application.routes.draw do
         resources :dummy_users do
-          member { map_method :patch, :update }
+          if Rails.version.starts_with? '4'
+            member { map_method :patch, [:update] }
+          else
+            member { map_method :patch, :update }
+          end
         end
       end
 
