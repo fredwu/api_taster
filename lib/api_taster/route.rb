@@ -37,6 +37,7 @@ module ApiTaster
         route_set.routes.each do |route|
           next if route.app.is_a?(Sprockets::Environment)
           next if route.app == ApiTaster::Engine
+          next if route.defaults[:controller].to_s.starts_with?('rails/')
 
           rack_app = discover_rack_app(route.app)
 
@@ -129,12 +130,18 @@ module ApiTaster
         url_param_keys = route[:path].scan /:\w+/
 
         url_params  = input.reject { |k, v| ! ":#{k}".in?(url_param_keys) }
-        post_params = input.diff(url_params)
+        post_params = hash_diff(input, url_params)
 
         {
           :url_params  => url_params,
           :post_params => post_params
         }
+      end
+
+      def hash_diff(h1, h2)
+        h1.dup.delete_if do |k, v|
+          h2[k] == v
+        end.merge!(h2.dup.delete_if { |k, v| h1.has_key?(k) })
       end
     end
   end
