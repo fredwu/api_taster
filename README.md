@@ -119,3 +119,7 @@ This gem is released under the [MIT License](http://www.opensource.org/licenses/
 ## Author
 
 [Fred Wu](https://github.com/fredwu), originally built for [Locomote](http://locomote.com.au).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fredwu/api_taster/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
