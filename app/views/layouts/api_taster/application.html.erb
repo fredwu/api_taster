@@ -11,12 +11,17 @@
     <div class="navbar-inner">
       <div class="container-fluid">
         <ul class="nav">
-          <li><a class="brand" href="<%= root_path %>">API Taster</a></li>
+          <li>
+            <%= link_to ApiTaster.config.title, root_path, class: 'brand' %>
+          </li>
         </ul>
         <div class="nav-collapse collapse">
           <ul class="nav pull-right">
             <li>
-              <a href="/" target="_blank"><%= Rails.application.class.name %> <i class="icon-share-alt icon-white"></i></a>
+              <%= link_to ApiTaster.config.app_url, target: '_blank' do %>
+                <%= ApiTaster.config.app_title %>
+                <i class="icon-share-alt icon-white"></i>
+              <% end %>
             </li>
           </ul>
         </div>
