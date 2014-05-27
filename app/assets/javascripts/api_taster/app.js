@@ -18,11 +18,11 @@ var ApiTaster = {
 
   detectContentType: function(response) {
     var contentType = response.getResponseHeader("Content-Type");
-    var detectedContentType = null
+    var detectedContentType = null;
 
     if (contentType.match(/application\/json/)) {
        detectedContentType = 'json';
-    }
+    };
 
     return detectedContentType;
   },
@@ -55,7 +55,13 @@ var ApiTaster = {
     }
 
     return baseUrl;
-  }
+  },
+
+  setHeaders: function(headers) {
+    this.headers = headers;
+  },
+
+  headers: []
 
 };
 
@@ -117,6 +123,12 @@ jQuery(function($) {
     ApiTaster.disableUrlParams();
 
     window.ajax = $.ajax({
+      beforeSend: function(xhr) {
+        var headers = ApiTaster.headers;
+        for(var l = headers.length, i = 0; i < l; i ++) {
+          xhr.setRequestHeader(headers[i].key, headers[i].value);
+        }
+      },
       url: ApiTaster.getSubmitUrl($form),
       type: $form.attr('method'),
       data: $form.serialize()

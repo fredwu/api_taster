@@ -5,6 +5,10 @@
   :label_type => 'important'
 %>
 
+<script type="application/javascript">
+  <%= headers_js_callback %>
+</script>
+
 <% if @params.is_a?(Hash) && @params.has_key?(:undefined) %>
   <%= render 'undefined_route', :route => @params[:undefined] %>
 <% else %>

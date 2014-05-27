@@ -1,5 +1,11 @@
 # ApiTaster [![endorse](http://api.coderwall.com/fredwu/endorsecount.png)](http://coderwall.com/fredwu) [![Build Status](https://secure.travis-ci.org/fredwu/api_taster.png?branch=master)](http://travis-ci.org/fredwu/api_taster) [![Dependency Status](https://gemnasium.com/fredwu/api_taster.png)](https://gemnasium.com/fredwu/api_taster)
 
+### NOTE
+> If you want to use this gem with Rails 3x/4.0 please specify version 0.7.0 in
+your Gemfile.
+
+> Version 0.8 of this gem is compatible only with Rails 4.1.
+
 A quick and easy way to visually test your Rails application's API.
 
 ![](http://i.imgur.com/8Dnto.png)
@@ -68,6 +74,22 @@ ApiTaster.route_path = Rails.root.to_s + "/app/api_tasters" # just an example
 ### Share Params with Test Factories
 
 If you use a test factory such as [FactoryGirl](https://github.com/thoughtbot/factory_girl), you can require your test factories and share the params. For example in FactoryGirl you can use the `attributes_for(:name_of_factory)` method.
+
+### Custom Headers
+
+If there are certain headers (such as auth token) that need to be present to
+consume an API endpoint, you may set then in `APITaster.global_headers` before
+`APITaster.routes`:
+
+```ruby
+ApiTaster.global_headers = {
+  'Authorization' => 'Token token=teGpfbVitpnUwm7qStf9'
+}
+
+ApiTaster.routes do
+  # your route definitions
+end
+```
 
 ### Global Params
 
