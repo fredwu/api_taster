@@ -15,9 +15,10 @@ module ApiTaster
         :name => 'home',
         :verb => 'GET',
         :path => '/home',
+        :full_path => '/home',
         :reqs => {
-          :controller => 'application',
-          :action => 'home'
+          :action => 'home',
+          :controller => 'application'
         }
       }
     end
