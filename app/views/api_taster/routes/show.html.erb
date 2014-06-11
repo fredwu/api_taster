@@ -5,6 +5,10 @@
   :label_type => 'important'
 %>
 
+<script type="application/javascript">
+  <%= headers_js_callback %>
+</script>
+
 <% if @params.is_a?(Hash) && @params.has_key?(:undefined) %>
   <%= render 'undefined_route', :route => @params[:undefined] %>
 <% else %>
@@ -16,7 +20,7 @@
   <% end %>
 
   <% @params.each do |param| %>
-    <%= form_tag @route[:path], :method => @route[:verb], :class => 'well form-horizontal', :remote => true do %>
+    <%= form_tag @route[:full_path], :method => @route[:verb], :class => 'well form-horizontal', :remote => true do %>
 
       <% if param[:url_params].empty? && param[:post_params].empty? %>
         <div class="alert alert-info">
