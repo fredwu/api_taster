@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'rspec-rails', '~> 2.13.2'
+  s.add_development_dependency 'rspec-rails', '~> 2.14.2'
   s.add_development_dependency 'pry'
   s.add_development_dependency 'thin'
 end
