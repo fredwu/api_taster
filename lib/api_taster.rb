@@ -1,5 +1,5 @@
 require 'jquery-rails'
-require 'bootstrap-sass'
+#require 'bootstrap-sass'
 require 'remotipart'
 require 'active_support/dependencies'
 require 'api_taster/engine'

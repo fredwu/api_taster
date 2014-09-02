@@ -5,8 +5,8 @@ require "api_taster/version"
 Gem::Specification.new do |s|
   s.name        = "api_taster"
   s.version     = ApiTaster::VERSION
-  s.authors     = ["Fred Wu"]
-  s.email       = ["ifredwu@gmail.com"]
+  s.authors     = ["Fred Wu", "Mario Chavez"]
+  s.email       = ["ifredwu@gmail.com", "mario.chavez@gmail.com"]
   s.homepage    = "https://github.com/fredwu/api_taster"
   s.summary     = "A quick and easy way to visually test out your application's API."
   s.description = s.summary
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 4.1.0'
   s.add_dependency 'jquery-rails'
   s.add_dependency 'sass-rails', '~> 4.0.3'
-  s.add_dependency 'bootstrap-sass', '~> 2.1'
+  #s.add_dependency 'bootstrap-sass', '~> 2.1'
   s.add_dependency 'redcarpet'
   s.add_dependency 'remotipart', '~> 1.0'
 
