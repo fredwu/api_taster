@@ -9,6 +9,7 @@ module ApiTaster
     cattr_accessor :metadata
 
     class << self
+
       def map_routes(path = ApiTaster.route_path)
         self.route_set            = Rails.application.routes
         self.supplied_params      = {}

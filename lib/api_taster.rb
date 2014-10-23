@@ -1,5 +1,4 @@
 require 'jquery-rails'
-#require 'bootstrap-sass'
 require 'remotipart'
 require 'active_support/dependencies'
 require 'api_taster/engine'
@@ -13,7 +12,11 @@ module ApiTaster
   self.global_params = {}
 
   mattr_accessor :route_path
-  self.route_path = "#{Rails.root}/lib/api_tasters"
+  def self.route_path
+    @@route_path ||= begin
+      "#{Rails.root.to_s}/lib/api_tasters"
+    end
+  end
 
   mattr_accessor :global_headers
   self.global_headers = {}
