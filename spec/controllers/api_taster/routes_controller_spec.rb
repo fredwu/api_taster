@@ -61,5 +61,19 @@ module ApiTaster
         end
       end
     end
+        
+    context "when defined ApiTaster.controller_hook" do
+      before do
+        ApiTaster.controller_hook { before_action {|c| c.response.headers['X-Controller-Hook'] = '1'} }
+        ApiTaster.controller_hook(described_class)
+      end
+      
+      it 'applies the hook' do
+        ApiTaster.controller_hook.should.kind_of? Proc
+      
+        get :index, :use_route => :api_taster
+        response.headers.keys.should include('X-Controller-Hook')
+      end
+    end
   end
 end
