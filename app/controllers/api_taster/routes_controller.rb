@@ -1,5 +1,6 @@
 module ApiTaster
   class RoutesController < ApiTaster::ApplicationController
+    ApiTaster.controller_hook(self)
     before_filter :map_routes
     layout false, except: :index
 
