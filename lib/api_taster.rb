@@ -25,6 +25,8 @@ module ApiTaster
     ApiTaster::RouteCollector.routes << block
   end
 
+  @@controller_hook = nil
+  
   # Controller hooking may used for custom filters, authorizations, etc.
   # 
   # Example with adding basic authentication: 
