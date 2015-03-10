@@ -131,7 +131,9 @@ jQuery(function($) {
       },
       url: ApiTaster.getSubmitUrl($form),
       type: $form.attr('method'),
-      data: $form.serialize()
+      data: new FormData(e.target),
+      processData: false,
+      contentType: false
     }).complete(onComplete);
 
     ApiTaster.lastRequest = {};
