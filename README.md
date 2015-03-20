@@ -45,7 +45,9 @@ if Rails.env.development?
 
     post '/users', {
       :user => {
-        :name => 'Fred'
+        :name => 'Fred',
+        # a file field, it doesn't have effect in GET request
+        :avatar => :file
       }
     }
 

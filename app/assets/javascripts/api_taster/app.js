@@ -122,7 +122,7 @@ jQuery(function($) {
     ApiTaster.disableSubmitButton();
     ApiTaster.disableUrlParams();
 
-    window.ajax = $.ajax({
+    var ajaxParams = {
       beforeSend: function(xhr) {
         var headers = ApiTaster.headers;
         for(var l = headers.length, i = 0; i < l; i ++) {
@@ -130,9 +130,18 @@ jQuery(function($) {
         }
       },
       url: ApiTaster.getSubmitUrl($form),
-      type: $form.attr('method'),
-      data: $form.serialize()
-    }).complete(onComplete);
+      type: $form.attr('method')
+    }
+
+    if (!ajaxParams.type || ajaxParams.type.toLowerCase() === 'get' || ajaxParams.type.toLowerCase() === 'head') {
+      ajaxParams.data = $form.serialize()
+    } else {
+      ajaxParams.data = new FormData(e.target)
+      ajaxParams.processData = false
+      ajaxParams.contentType = false
+    }
+
+    window.ajax = $.ajax(ajaxParams).complete(onComplete);
 
     ApiTaster.lastRequest = {};
     ApiTaster.lastRequest.startTime = Date.now();
